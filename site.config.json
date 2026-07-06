@@ -1,6 +1,7 @@
 {
   "siteName": "Gold Price Per Gram UK",
   "siteUrl": "https://goldpricepergram.co.uk",
+  "sisterSiteUrl": "https://usgoldpricepergram.com",
   "apiProvider": "goldapi.io",
   "apiEndpoint": "https://www.goldapi.io/api/XAU/GBP",
   "spotCurrency": "GBP",

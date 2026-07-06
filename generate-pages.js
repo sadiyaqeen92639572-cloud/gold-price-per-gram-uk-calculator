@@ -4,8 +4,32 @@ const path = require('path');
 const ROOT = __dirname;
 const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const SITE_URL = CONFIG.siteUrl;
+const US_URL = CONFIG.sisterSiteUrl;
 
 const CARAT_KEYS = ['24k', '22k', '21k', '18k', '14k', '9ct'];
+
+// hreflang counterpart on the US site — only for carats that genuinely exist on both sites.
+// 21k and 9ct have no US equivalent (US low end is 10k, a different purity), so no hreflang pair.
+const US_HREFLANG_PATH = {
+  '24k': '24k-gold-price-per-gram',
+  '22k': '22k-gold-price-per-gram',
+  '18k': '18k-gold-price-per-gram',
+  '14k': '14k-gold-price-per-gram',
+};
+
+function hreflangTags(caratKey) {
+  const usPath = caratKey ? US_HREFLANG_PATH[caratKey] : '';
+  if (caratKey && !usPath) return ''; // no US counterpart (21k, 9ct) — no hreflang pair
+  const ukPath = caratKey ? CARATS[caratKey].slug + '/' : '';
+  const ukHref = `${SITE_URL}/${ukPath}`;
+  const usHref = usPath ? `${US_URL}/${usPath}/` : `${US_URL}/`;
+  return `<link rel="alternate" hreflang="en-GB" href="${ukHref}">
+<link rel="alternate" hreflang="en-US" href="${usHref}">`;
+}
+
+function siteBanner() {
+  return `<div class="site-banner"><a href="https://goldpricepergram.co.uk/" class="sb-link active">🇬🇧 UK site · GBP</a><a href="https://usgoldpricepergram.com/" class="sb-link">🇺🇸 US site · USD</a></div>`;
+}
 
 // Per-page content — each purity page has a genuinely distinct angle/use-case section
 // (not a title-swapped template) to avoid a near-duplicate-content SEO risk.
@@ -134,13 +158,14 @@ function relatedCaratLinks(excludeKey) {
   }).join('\n    ');
 }
 
-function headBoilerplate(page) {
+function headBoilerplate(page, caratKey) {
   return `<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${page.title}</title>
 <meta name="description" content="${page.metaDesc}">
 ${page.keywords ? `<meta name="keywords" content="${page.keywords}">` : ''}
 <link rel="canonical" href="${SITE_URL}/${page.slug}/">
+${hreflangTags(caratKey)}
 <meta property="og:title" content="${page.title}">
 <meta property="og:description" content="${page.metaDesc}">
 <meta property="og:type" content="website">
@@ -151,6 +176,10 @@ ${page.keywords ? `<meta name="keywords" content="${page.keywords}">` : ''}
 const SHARED_STYLE = `<style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root { --brand:#a8790a; --brand-dark:#6b4d05; --brand-light:#fbf3de; --text:#241f12; --muted:#7a6f5c; --border:#ece1c9; --bg:#faf8f2; --radius:12px; }
+.site-banner { position:sticky; top:0; z-index:200; display:flex; justify-content:center; gap:6px; padding:7px 10px; background:#2c2408; border-bottom:1px solid rgba(255,255,255,.08); }
+.sb-link { display:inline-flex; align-items:center; gap:5px; padding:5px 14px; border-radius:20px; font-size:.8rem; font-weight:600; text-decoration:none; color:#e9dcc0; border:1px solid rgba(255,255,255,.14); }
+.sb-link:hover { background:rgba(255,255,255,.10); }
+.sb-link.active { background:#fff; color:#2c2408; border-color:#fff; }
 body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:var(--text); background:var(--bg); font-size:16px; line-height:1.65; }
 header { background:linear-gradient(135deg,var(--brand-dark) 0%,var(--brand) 100%); color:#fff; padding:52px 20px 88px; text-align:center; }
 header .badge { display:inline-block; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:20px; padding:4px 14px; font-size:.78rem; font-weight:600; letter-spacing:.4px; margin-bottom:16px; }
@@ -241,7 +270,7 @@ ${faqJsonLd(page.faq)}
   return `<!DOCTYPE html>
 <html lang="en-GB">
 <head>
-${headBoilerplate(page)}
+${headBoilerplate(page, key)}
 
 <!-- START_PRICE_DATA -->
 <script>window.GOLD_DATA = ${JSON.stringify(require('./gold-data.json'))};</script>
@@ -251,6 +280,8 @@ ${jsonLd}
 ${SHARED_STYLE}
 </head>
 <body>
+
+${siteBanner()}
 
 <header>
   <div class="container">
@@ -375,7 +406,7 @@ ${faqJsonLd(page.faq)}
   return `<!DOCTYPE html>
 <html lang="en-GB">
 <head>
-${headBoilerplate(page)}
+${headBoilerplate(page, null)}
 
 <!-- START_PRICE_DATA -->
 <script>window.GOLD_DATA = ${JSON.stringify(require('./gold-data.json'))};</script>
@@ -386,6 +417,8 @@ ${SHARED_STYLE}
 <style>select{border:2px solid var(--border);border-radius:8px;padding:12px 14px;font-size:1rem;color:var(--text);background:#fff;width:100%;}select:focus{outline:none;border-color:var(--brand);}</style>
 </head>
 <body>
+
+${siteBanner()}
 
 <header>
   <div class="container">
@@ -489,7 +522,7 @@ function buildMethodologyPage(page) {
   return `<!DOCTYPE html>
 <html lang="en-GB">
 <head>
-${headBoilerplate(page)}
+${headBoilerplate(page, null)}
 
 <!-- START_PRICE_DATA -->
 <script>window.GOLD_DATA = ${JSON.stringify(require('./gold-data.json'))};</script>
@@ -498,6 +531,8 @@ ${headBoilerplate(page)}
 ${SHARED_STYLE}
 </head>
 <body>
+
+${siteBanner()}
 
 <header>
   <div class="container">
