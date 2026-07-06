@@ -308,6 +308,7 @@ ${faqHtml(page.faq)}
   <div class="container">
     <div class="disc">Prices are an indicative live spot rate, not a dealer quote — always confirm with a dealer before selling. Data source: goldapi.io.</div>
     <p><a href="/methodology/">Methodology</a> · Gold Price Per Gram UK</p>
+    <p style="font-size:.72rem;margin-top:8px;">Gold Price Per Gram calculators are part of Gesmine-Invest Limited, registered UK company number 14120136, registered office address at Hardy House, 269 Poynders Gardens, London, London, United Kingdom, SW4 8PQ.</p>
   </div>
 </footer>
 
@@ -448,6 +449,7 @@ ${faqHtml(page.faq)}
   <div class="container">
     <div class="disc">Prices are an indicative live spot rate, not a dealer quote — always confirm with a dealer before selling. Data source: goldapi.io.</div>
     <p><a href="/methodology/">Methodology</a> · Gold Price Per Gram UK</p>
+    <p style="font-size:.72rem;margin-top:8px;">Gold Price Per Gram calculators are part of Gesmine-Invest Limited, registered UK company number 14120136, registered office address at Hardy House, 269 Poynders Gardens, London, London, United Kingdom, SW4 8PQ.</p>
   </div>
 </footer>
 
@@ -549,6 +551,7 @@ ${SHARED_STYLE}
   <div class="container">
     <div class="disc">Prices are an indicative live spot rate, not a dealer quote — always confirm with a dealer before selling. Data source: goldapi.io.</div>
     <p>Gold Price Per Gram UK</p>
+    <p style="font-size:.72rem;margin-top:8px;">Gold Price Per Gram calculators are part of Gesmine-Invest Limited, registered UK company number 14120136, registered office address at Hardy House, 269 Poynders Gardens, London, London, United Kingdom, SW4 8PQ.</p>
   </div>
 </footer>
 
