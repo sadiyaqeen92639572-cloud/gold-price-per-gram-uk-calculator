@@ -1,22 +1,22 @@
 {
-  "lastUpdated": null,
-  "isFallback": true,
-  "spotPricePerOzGBP": null,
+  "lastUpdated": "2026-07-06T17:12:56.240Z",
+  "isFallback": false,
+  "spotPricePerOzGBP": 3105.115,
   "pricePerGram": {
-    "24k": null,
-    "22k": null,
-    "21k": null,
-    "18k": null,
-    "14k": null,
-    "9ct": null
+    "24k": 99.83,
+    "22k": 91.51,
+    "21k": 87.35,
+    "18k": 74.87,
+    "14k": 58.24,
+    "9ct": 37.44
   },
   "scrapPricePerGram": {
-    "24k": null,
-    "22k": null,
-    "21k": null,
-    "18k": null,
-    "14k": null,
-    "9ct": null
+    "24k": 84.86,
+    "22k": 77.79,
+    "21k": 74.25,
+    "18k": 63.64,
+    "14k": 49.5,
+    "9ct": 31.82
   },
-  "note": "placeholder — no live fetch has run yet, populated by update-data.js"
+  "note": null
 }
