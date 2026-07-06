@@ -1,0 +1,22 @@
+{
+  "lastUpdated": null,
+  "isFallback": true,
+  "spotPricePerOzGBP": null,
+  "pricePerGram": {
+    "24k": null,
+    "22k": null,
+    "21k": null,
+    "18k": null,
+    "14k": null,
+    "9ct": null
+  },
+  "scrapPricePerGram": {
+    "24k": null,
+    "22k": null,
+    "21k": null,
+    "18k": null,
+    "14k": null,
+    "9ct": null
+  },
+  "note": "placeholder — no live fetch has run yet, populated by update-data.js"
+}

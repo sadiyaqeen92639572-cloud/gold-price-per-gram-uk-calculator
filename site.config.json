@@ -1,0 +1,31 @@
+{
+  "siteName": "Gold Price Per Gram UK",
+  "siteUrl": "https://goldpricepergram.co.uk",
+  "apiProvider": "goldapi.io",
+  "apiEndpoint": "https://www.goldapi.io/api/XAU/GBP",
+  "spotCurrency": "GBP",
+  "troyOzToGrams": 31.1035,
+  "purities": {
+    "24k": { "fraction": 1.0,    "apiField": "price_gram_24k", "hallmark": "999",  "label": "24 Carat (24k)" },
+    "22k": { "fraction": 0.9167, "apiField": "price_gram_22k", "hallmark": "916",  "label": "22 Carat (22k)" },
+    "21k": { "fraction": 0.875,  "apiField": "price_gram_21k", "hallmark": "875",  "label": "21 Carat (21k)" },
+    "18k": { "fraction": 0.75,   "apiField": "price_gram_18k", "hallmark": "750",  "label": "18 Carat (18k)" },
+    "14k": { "fraction": 0.585,  "apiField": "price_gram_14k", "hallmark": "585",  "label": "14 Carat (14k)" },
+    "9ct": { "fraction": 0.375,  "apiField": null,             "hallmark": "375",  "label": "9 Carat (9ct)" }
+  },
+  "dealerDiscountFactor": 0.85,
+  "dealerDiscountNote": "Estimate only, adjustable — actual dealer/scrap offers vary by purity, volume, and dealer. Not a quote.",
+  "updateSchedule": "0 6,12,18 * * *",
+  "fallbackMaxAgeHours": 12,
+  "pages": [
+    { "slug": "",                                    "file": "index.html" },
+    { "slug": "24-carat-gold-price-per-gram-uk",      "file": "24-carat-gold-price-per-gram-uk/index.html" },
+    { "slug": "22-carat-gold-price-per-gram-uk",      "file": "22-carat-gold-price-per-gram-uk/index.html" },
+    { "slug": "21-carat-gold-price-per-gram-uk",      "file": "21-carat-gold-price-per-gram-uk/index.html" },
+    { "slug": "18-carat-gold-price-per-gram-uk",      "file": "18-carat-gold-price-per-gram-uk/index.html" },
+    { "slug": "14k-gold-price-per-gram-uk",           "file": "14k-gold-price-per-gram-uk/index.html" },
+    { "slug": "9ct-gold-price-per-gram-uk",           "file": "9ct-gold-price-per-gram-uk/index.html" },
+    { "slug": "scrap-gold-price-per-gram-uk",         "file": "scrap-gold-price-per-gram-uk/index.html" },
+    { "slug": "methodology",                          "file": "methodology/index.html" }
+  ]
+}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methodology — How Gold Price Per Gram UK Is Calculated</title>
+<meta name="description" content="How goldpricepergram.co.uk calculates its live gold price per gram: data source, update frequency, formula, and a live worked example.">
+
+<link rel="canonical" href="https://goldpricepergram.co.uk/methodology/">
+<meta property="og:title" content="Methodology — How Gold Price Per Gram UK Is Calculated">
+<meta property="og:description" content="How goldpricepergram.co.uk calculates its live gold price per gram: data source, update frequency, formula, and a live worked example.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://goldpricepergram.co.uk/methodology/">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- START_PRICE_DATA -->
+<script>window.GOLD_DATA = {"lastUpdated":null,"isFallback":true,"spotPricePerOzGBP":null,"pricePerGram":{"24k":null,"22k":null,"21k":null,"18k":null,"14k":null,"9ct":null},"scrapPricePerGram":{"24k":null,"22k":null,"21k":null,"18k":null,"14k":null,"9ct":null},"note":"placeholder — no live fetch has run yet, populated by update-data.js"};</script>
+<!-- END_PRICE_DATA -->
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --brand:#a8790a; --brand-dark:#6b4d05; --brand-light:#fbf3de; --text:#241f12; --muted:#7a6f5c; --border:#ece1c9; --bg:#faf8f2; --radius:12px; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:var(--text); background:var(--bg); font-size:16px; line-height:1.65; }
+header { background:linear-gradient(135deg,var(--brand-dark) 0%,var(--brand) 100%); color:#fff; padding:52px 20px 88px; text-align:center; }
+header .badge { display:inline-block; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:20px; padding:4px 14px; font-size:.78rem; font-weight:600; letter-spacing:.4px; margin-bottom:16px; }
+header h1 { font-size:clamp(1.5rem,4vw,2.2rem); font-weight:800; margin-bottom:12px; }
+header p { color:rgba(255,255,255,.92); font-size:1rem; max-width:600px; margin:0 auto; }
+.container { max-width:840px; margin:0 auto; padding:0 20px; }
+.tool-wrapper { margin:-56px auto 48px; }
+.tool-card { background:#fff; border-radius:var(--radius); box-shadow:0 8px 40px rgba(107,77,5,.14); border:1px solid var(--border); padding:32px 28px; }
+@media (max-width:580px){ .tool-card{ padding:22px 16px; } }
+.refresh-line { font-size:.78rem; color:var(--muted); text-align:center; margin-bottom:18px; }
+.fallback-banner { display:none; background:#fff3cd; border:1px solid #f0c94a; color:#5c4a00; border-radius:8px; padding:10px 14px; font-size:.82rem; margin-bottom:16px; text-align:center; }
+.form-grid { display:grid; grid-template-columns:1fr; gap:16px; max-width:320px; margin:0 auto; }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+label { font-size:.79rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+input[type=number] { border:2px solid var(--border); border-radius:8px; padding:12px 14px; font-size:1rem; color:var(--text); background:#fff; width:100%; }
+input[type=number]:focus { outline:none; border-color:var(--brand); }
+.calc-btn { width:100%; margin-top:22px; padding:17px; background:var(--brand); color:#fff; border:none; border-radius:10px; font-size:1.08rem; font-weight:700; cursor:pointer; }
+.calc-btn:hover { background:var(--brand-dark); }
+.result { display:none; margin-top:26px; }
+.result-hero { background:linear-gradient(135deg,var(--brand-dark),var(--brand)); border-radius:10px; padding:26px; color:#fff; text-align:center; margin-bottom:14px; }
+.result-hero .rl { font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; opacity:.85; margin-bottom:4px; }
+.result-hero .ra { font-size:2.5rem; font-weight:900; line-height:1.1; }
+.result-hero .rs { font-size:.9rem; opacity:.9; margin-top:6px; }
+.result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+@media (max-width:480px){ .result-grid{ grid-template-columns:1fr 1fr; } }
+.r-stat { background:var(--brand-light); border-radius:8px; padding:14px; text-align:center; }
+.r-stat .sv { font-size:1.15rem; font-weight:800; color:var(--brand-dark); }
+.r-stat .sl { font-size:.72rem; color:var(--muted); margin-top:2px; }
+.content { padding-bottom:64px; }
+h2.st { font-size:1.3rem; font-weight:800; margin:48px 0 16px; }
+p { color:#3d3520; margin-bottom:14px; line-height:1.75; }
+.link-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px; margin:18px 0; }
+.link-card { display:block; background:#fff; border:1px solid var(--border); border-radius:10px; padding:16px; text-decoration:none; color:var(--text); }
+.link-card:hover { border-color:var(--brand); }
+.link-card .t { font-weight:700; font-size:.92rem; margin-bottom:3px; }
+.link-card .sub { font-size:.76rem; color:var(--muted); }
+.method { background:#fff; border:1px solid var(--border); border-radius:12px; padding:26px 26px 18px; margin:0 0 36px; font-size:.9rem; }
+.method .code { background:#2c2408; color:#f2e3c5; border-radius:8px; padding:16px 18px; font-family:'Courier New',monospace; font-size:.82rem; line-height:1.9; margin:14px 0; overflow-x:auto; }
+.faq-item { border-bottom:1px solid var(--border); }
+.faq-q { width:100%; background:none; border:none; text-align:left; padding:17px 0; font-size:.92rem; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; color:var(--text); }
+.faq-q::after { content:'+'; font-size:1.3rem; color:var(--brand); flex-shrink:0; margin-left:12px; }
+.faq-q.open::after { content:'−'; }
+.faq-a { display:none; padding:0 0 16px; font-size:.88rem; color:#4b4326; line-height:1.75; }
+.faq-a.open { display:block; }
+.disc { background:#3a2f0e; border-radius:8px; padding:13px 18px; margin-bottom:16px; font-size:.78rem; color:#d9c9a3; line-height:1.6; }
+footer { background:#2c2408; color:#c9bd9c; text-align:center; padding:30px 20px; font-size:.8rem; }
+footer p { color:#c9bd9c; }
+footer a { color:#e9dcc0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="badge">📐 Data source &amp; formula</div>
+    <h1>Methodology</h1>
+    <p>How this site's gold price per gram is sourced, calculated and refreshed.</p>
+  </div>
+</header>
+
+<div class="container">
+<div class="content" style="padding-top:64px;">
+  <h2 class="st">Data Source</h2>
+  <p>Live spot gold prices are sourced from <a href="https://www.goldapi.io/" target="_blank" rel="noopener">goldapi.io</a>, queried in GBP against the XAU (gold) symbol. This is a live wholesale/interbank-style spot price, not a retail dealer quote.</p>
+
+  <h2 class="st">Update Frequency</h2>
+  <p>The price is refreshed <strong>three times per day</strong> via an automated job. Every page always shows the exact "Last refreshed" timestamp of the data currently displayed. If the live feed is temporarily unavailable, the site falls back to the last known price and shows a clear "using cached rate" banner rather than a broken or zeroed page.</p>
+
+  <h2 class="st">Calculation Formula</h2>
+  <div class="method">
+    <div class="code">
+<span>price_per_gram(24k) = spot_price_per_troy_oz(GBP) / 31.1035</span><br>
+<span>price_per_gram(purity) = price_per_gram(24k) × purity_fraction</span><br>
+<span>scrap_estimate(purity) = price_per_gram(purity) × dealer_discount_factor</span>
+    </div>
+    <p id="liveExample" style="font-size:.85rem;color:var(--muted);"></p>
+  </div>
+
+  <h2 class="st">Purity Fractions Used</h2>
+  <table style="width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem;">
+    <thead><tr style="background:var(--brand);color:#fff;"><th style="padding:10px 14px;text-align:left;">Purity</th><th style="padding:10px 14px;text-align:left;">Hallmark</th><th style="padding:10px 14px;text-align:left;">Fine gold fraction</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">24 Carat</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">999</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">1</td></tr>
+      <tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">22 Carat</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">916</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">0.9167</td></tr>
+      <tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">21 Carat</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">875</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">0.875</td></tr>
+      <tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">18 Carat</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">750</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">0.75</td></tr>
+      <tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">14 Carat</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">585</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">0.585</td></tr>
+      <tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">9 Carat</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">375</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">0.375</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="st">Scrap / Dealer Discount</h2>
+  <p>The scrap gold estimate applies a configurable discount factor (currently 0.85) to the live per-gram price. This is explicitly an <strong>estimate, not a market rule</strong> — real dealer offers vary by purity, weight sold and the individual dealer. Always get a real quote before selling.</p>
+
+  <h2 class="st">Who Runs This Site</h2>
+  <p>Gold Price Per Gram UK is an independent calculator site. It is not a dealer, refiner or financial adviser, and prices shown are indicative only — always confirm with a dealer or jeweller before any transaction.</p>
+
+  <div class="link-grid" style="margin-top:32px;">
+    <a class="link-card" href="/"><div class="t">Main Calculator</div><div class="sub">All purities in one tool</div></a>
+    <a class="link-card" href="/24-carat-gold-price-per-gram-uk/"><div class="t">24 Carat (24k)</div><div class="sub">Hallmark 999</div></a>
+    <a class="link-card" href="/22-carat-gold-price-per-gram-uk/"><div class="t">22 Carat (22k)</div><div class="sub">Hallmark 916</div></a>
+    <a class="link-card" href="/21-carat-gold-price-per-gram-uk/"><div class="t">21 Carat (21k)</div><div class="sub">Hallmark 875</div></a>
+    <a class="link-card" href="/18-carat-gold-price-per-gram-uk/"><div class="t">18 Carat (18k)</div><div class="sub">Hallmark 750</div></a>
+    <a class="link-card" href="/14k-gold-price-per-gram-uk/"><div class="t">14 Carat (14k)</div><div class="sub">Hallmark 585</div></a>
+    <a class="link-card" href="/9ct-gold-price-per-gram-uk/"><div class="t">9 Carat (9ct)</div><div class="sub">Hallmark 375</div></a>
+    <a class="link-card" href="/scrap-gold-price-per-gram-uk/"><div class="t">Scrap Gold</div><div class="sub">Selling &amp; dealer estimate</div></a>
+  </div>
+</div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="disc">Prices are an indicative live spot rate, not a dealer quote — always confirm with a dealer before selling. Data source: goldapi.io.</div>
+    <p>Gold Price Per Gram UK</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const gd = window.GOLD_DATA;
+  const el = document.getElementById('liveExample');
+  if(gd && gd.pricePerGram && gd.pricePerGram['24k'] != null){
+    const g24 = gd.pricePerGram['24k'];
+    const oz = (g24*31.1035).toFixed(2);
+    el.textContent = 'Live worked example (as of last refresh): spot ≈ £' + oz + '/oz → £' + g24.toFixed(2) + '/g at 24k.';
+  } else {
+    el.textContent = 'Live worked example will appear once the first price update has run.';
+  }
+})();
+</script>
+</body>
+</html>
