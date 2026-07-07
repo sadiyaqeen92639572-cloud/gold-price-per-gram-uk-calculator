@@ -14,6 +14,10 @@ Live UK gold price per gram calculator — 24k, 22k, 21k, 18k, 14k, 9ct and scra
 - `update-data.js` — fetches the live spot price from [goldapi.io](https://www.goldapi.io/), computes per-purity prices, writes `gold-data.json`, and injects the result into every page via `<!-- START_PRICE_DATA -->` markers. Falls back to the last known price (with a visible banner) if the API is unavailable.
 - `generate-pages.js` — regenerates the 8 satellite pages from `site.config.json` + inline content. Run this after editing page copy; run `update-data.js` after to re-inject current prices.
 
+## Free Companion Tools
+
+- [Gold Scrap Value Estimator](https://sadiyaqeen92639572-cloud.github.io/gold-scrap-value-estimator/) — enter weight + hallmark purity (375/585/750/916/999) for a low/high estimated dealer sale range. Powered by [goldpricepergram.co.uk](https://goldpricepergram.co.uk) for the live 24k rate.
+
 ## Local testing
 
 ```bash
