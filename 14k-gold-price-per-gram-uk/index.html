@@ -281,6 +281,18 @@ function calculate(){
 }
 function toggleFaq(b){ b.classList.toggle('open'); b.nextElementSibling.classList.toggle('open'); }
 refreshBanner();
+// GOLD_DATA_SELF_HEAL: GitHub Pages CDN can serve a stale index.html for hours after deploy.
+// Re-fetch gold-data.json with a cache-busting query (bypasses the CDN cache key) and
+// swap in the data if it's newer than what was baked into this page.
+fetch('/gold-data.json?t=' + Date.now(), {cache:'no-store'})
+  .then(function(r){ return r.ok ? r.json() : null; })
+  .then(function(fresh){
+    if(fresh && fresh.lastUpdated && new Date(fresh.lastUpdated) > new Date(window.GOLD_DATA.lastUpdated)){
+      window.GOLD_DATA = fresh;
+      refreshBanner();
+    }
+  })
+  .catch(function(){});
 </script>
 </body>
 </html>

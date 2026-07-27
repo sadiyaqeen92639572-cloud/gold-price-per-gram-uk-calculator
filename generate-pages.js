@@ -457,6 +457,15 @@ function calculate(){
 }
 function toggleFaq(b){ b.classList.toggle('open'); b.nextElementSibling.classList.toggle('open'); }
 refreshBanner();
+fetch('/gold-data.json?t=' + Date.now(), {cache:'no-store'})
+  .then(function(r){ return r.ok ? r.json() : null; })
+  .then(function(fresh){
+    if(fresh && fresh.lastUpdated && new Date(fresh.lastUpdated) > new Date(window.GOLD_DATA.lastUpdated)){
+      window.GOLD_DATA = fresh;
+      refreshBanner();
+    }
+  })
+  .catch(function(){});
 </script>
 </body>
 </html>
@@ -608,6 +617,15 @@ function calculate(){
 }
 function toggleFaq(b){ b.classList.toggle('open'); b.nextElementSibling.classList.toggle('open'); }
 refreshBanner();
+fetch('/gold-data.json?t=' + Date.now(), {cache:'no-store'})
+  .then(function(r){ return r.ok ? r.json() : null; })
+  .then(function(fresh){
+    if(fresh && fresh.lastUpdated && new Date(fresh.lastUpdated) > new Date(window.GOLD_DATA.lastUpdated)){
+      window.GOLD_DATA = fresh;
+      refreshBanner();
+    }
+  })
+  .catch(function(){});
 </script>
 </body>
 </html>
