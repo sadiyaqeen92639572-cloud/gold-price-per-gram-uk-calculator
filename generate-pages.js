@@ -195,7 +195,7 @@ const OUNCE_PAGE = {
   angleBody: 'A troy ounce (31.1035g) is heavier than the everyday avoirdupois ounce (28.35g) used for food or post — bullion, coins and the interbank spot price are always quoted in troy ounces, a convention dating back to medieval bullion trading. If you\'re pricing a bar, Sovereign or Britannia coin rather than jewellery, this is the unit dealers and price charts will quote.',
   faq: [
     { q: 'How many grams are in a troy ounce of gold?', a: 'A troy ounce is 31.1035 grams — heavier than the 28.35g "standard" (avoirdupois) ounce used for everyday weights. All gold bullion and spot prices use the troy ounce.' },
-    { q: 'Is the gold price per ounce the same as the spot price?', a: 'For 24k (999.9 fine) gold, yes — the troy ounce price is the raw interbank spot price. For lower purities (22k, 18k, 9ct etc.), the per-ounce price is the spot price scaled down by that purity\'s fine-gold fraction.' },
+    { q: 'Is the gold price per ounce the same as the spot price?', a: 'For 24k (999.9 fine) gold, yes — the troy ounce price is the raw interbank spot price. For 22k, 21k, 18k and 14k, the per-ounce price comes from goldapi.io\'s own per-purity quote (scaled up to a troy ounce), not from scaling the spot price by a fraction. 9ct is the exception, calculated as the 24k price × 0.375, since goldapi.io has no 9ct field.' },
     { q: 'Why do bullion dealers quote per ounce and jewellers quote per gram?', a: 'Bullion (bars, coins) is bought and sold in large enough units that the troy ounce is a practical, industry-standard size. Jewellery pieces are usually a few grams, so pricing per gram is more useful for valuing a ring, chain or bracelet.' },
   ],
 };

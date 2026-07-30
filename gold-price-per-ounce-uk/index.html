@@ -43,7 +43,7 @@
       "@type": "FAQPage",
       "mainEntity": [
         { "@type": "Question", "name": "How many grams are in a troy ounce of gold?", "acceptedAnswer": { "@type": "Answer", "text": "A troy ounce is 31.1035 grams — heavier than the 28.35g \"standard\" (avoirdupois) ounce used for everyday weights. All gold bullion and spot prices use the troy ounce." } },
-        { "@type": "Question", "name": "Is the gold price per ounce the same as the spot price?", "acceptedAnswer": { "@type": "Answer", "text": "For 24k (999.9 fine) gold, yes — the troy ounce price is the raw interbank spot price. For lower purities (22k, 18k, 9ct etc.), the per-ounce price is the spot price scaled down by that purity's fine-gold fraction." } },
+        { "@type": "Question", "name": "Is the gold price per ounce the same as the spot price?", "acceptedAnswer": { "@type": "Answer", "text": "For 24k (999.9 fine) gold, yes — the troy ounce price is the raw interbank spot price. For 22k, 21k, 18k and 14k, the per-ounce price comes from goldapi.io's own per-purity quote (scaled up to a troy ounce), not from scaling the spot price by a fraction. 9ct is the exception, calculated as the 24k price × 0.375, since goldapi.io has no 9ct field." } },
         { "@type": "Question", "name": "Why do bullion dealers quote per ounce and jewellers quote per gram?", "acceptedAnswer": { "@type": "Answer", "text": "Bullion (bars, coins) is bought and sold in large enough units that the troy ounce is a practical, industry-standard size. Jewellery pieces are usually a few grams, so pricing per gram is more useful for valuing a ring, chain or bracelet." } }
       ]
     },
@@ -217,7 +217,7 @@ footer a { color:#e9dcc0; }
   <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How many grams are in a troy ounce of gold?</button>
     <div class="faq-a">A troy ounce is 31.1035 grams — heavier than the 28.35g "standard" (avoirdupois) ounce used for everyday weights. All gold bullion and spot prices use the troy ounce.</div></div>
   <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is the gold price per ounce the same as the spot price?</button>
-    <div class="faq-a">For 24k (999.9 fine) gold, yes — the troy ounce price is the raw interbank spot price. For lower purities (22k, 18k, 9ct etc.), the per-ounce price is the spot price scaled down by that purity's fine-gold fraction.</div></div>
+    <div class="faq-a">For 24k (999.9 fine) gold, yes — the troy ounce price is the raw interbank spot price. For 22k, 21k, 18k and 14k, the per-ounce price comes from goldapi.io's own per-purity quote (scaled up to a troy ounce), not from scaling the spot price by a fraction. 9ct is the exception, calculated as the 24k price × 0.375, since goldapi.io has no 9ct field.</div></div>
   <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Why do bullion dealers quote per ounce and jewellers quote per gram?</button>
     <div class="faq-a">Bullion (bars, coins) is bought and sold in large enough units that the troy ounce is a practical, industry-standard size. Jewellery pieces are usually a few grams, so pricing per gram is more useful for valuing a ring, chain or bracelet.</div></div>
 </div>
