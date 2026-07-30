@@ -27,6 +27,10 @@
     { "slug": "14k-gold-price-per-gram-uk",           "file": "14k-gold-price-per-gram-uk/index.html" },
     { "slug": "9ct-gold-price-per-gram-uk",           "file": "9ct-gold-price-per-gram-uk/index.html" },
     { "slug": "scrap-gold-price-per-gram-uk",         "file": "scrap-gold-price-per-gram-uk/index.html" },
+    { "slug": "gold-price-history-uk",                "file": "gold-price-history-uk/index.html" },
+    { "slug": "gold-price-per-ounce-uk",               "file": "gold-price-per-ounce-uk/index.html" },
+    { "slug": "gold-price-per-kg-uk",                  "file": "gold-price-per-kg-uk/index.html" },
+    { "slug": "gold-sovereign-price-uk",               "file": "gold-sovereign-price-uk/index.html" },
     { "slug": "methodology",                          "file": "methodology/index.html" }
   ]
 }

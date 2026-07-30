@@ -181,6 +181,9 @@ footer a { color:#e9dcc0; }
     <a class="link-card" href="/18-carat-gold-price-per-gram-uk/"><div class="t">18 Carat (18k)</div><div class="sub">Hallmark 750</div></a>
     <a class="link-card" href="/14k-gold-price-per-gram-uk/"><div class="t">14 Carat (14k)</div><div class="sub">Hallmark 585</div></a>
     <a class="link-card" href="/scrap-gold-price-per-gram-uk/"><div class="t">Scrap Gold</div><div class="sub">Selling &amp; dealer estimate</div></a>
+    <a class="link-card" href="/gold-price-history-uk/"><div class="t">Price History</div><div class="sub">Chart &amp; trend</div></a>
+    <a class="link-card" href="/gold-price-per-ounce-uk/"><div class="t">Per Troy Ounce</div><div class="sub">Bullion-unit pricing</div></a>
+    <a class="link-card" href="/gold-sovereign-price-uk/"><div class="t">Sovereign Coins</div><div class="sub">Sovereign, half-Sovereign, Britannia</div></a>
     <a class="link-card" href="/"><div class="t">Main Calculator</div><div class="sub">All purities in one tool</div></a>
     <a class="link-card" href="/methodology/"><div class="t">Methodology</div><div class="sub">Data source &amp; formula</div></a>
   </div>
@@ -280,9 +283,6 @@ function calculate(){
 }
 function toggleFaq(b){ b.classList.toggle('open'); b.nextElementSibling.classList.toggle('open'); }
 refreshBanner();
-// GOLD_DATA_SELF_HEAL: GitHub Pages CDN can serve a stale index.html for hours after deploy.
-// Re-fetch gold-data.json with a cache-busting query (bypasses the CDN cache key) and
-// swap in the data if it's newer than what was baked into this page.
 fetch('/gold-data.json?t=' + Date.now(), {cache:'no-store'})
   .then(function(r){ return r.ok ? r.json() : null; })
   .then(function(fresh){

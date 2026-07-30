@@ -1,10 +1,12 @@
 const fs = require('fs');
 const path = require('path');
+const { buildSVG, buildStats } = require('./history-chart.js');
 
 const ROOT = __dirname;
 const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const SITE_URL = CONFIG.siteUrl;
 const US_URL = CONFIG.sisterSiteUrl;
+const HISTORY = fs.existsSync(path.join(ROOT, 'history.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'history.json'), 'utf8')) : [];
 
 const CARAT_KEYS = ['24k', '22k', '21k', '18k', '14k', '9ct'];
 
@@ -141,6 +143,114 @@ const SCRAP_PAGE = {
     { q: 'Will I get the full spot price for scrap gold?', a: 'No. Dealers buy scrap gold below the live spot price to cover refining costs and their margin. The exact discount varies by dealer, purity and the weight you\'re selling — this calculator shows an adjustable estimate, not a guaranteed quote.' },
     { q: 'How can I get the best price when selling scrap gold?', a: 'Get quotes from at least two or three dealers, ask them to test purity in front of you, and sell items together by purity (9ct separate from 18ct, for example) rather than as a mixed lot, since mixed-purity gold is often valued at the lowest purity present.' },
     { q: 'Does the purity of my scrap gold affect the price per gram?', a: 'Yes — significantly. 22ct scrap is worth much more per gram than 9ct scrap, since 9ct is only 37.5% pure gold by weight. Always check the hallmark before comparing offers.' },
+    { q: 'What percentage of the spot price do UK gold dealers typically pay?', a: 'As a rough guide, specialist online bullion/scrap dealers tend to pay towards the higher end (commonly cited around 80-92% of spot for good-purity scrap), while high-street jewellers and especially pawnbrokers often pay less. These are general market ranges, not a quote — always compare actual offers.' },
+    { q: 'Should I sell scrap gold to a local jeweller or a specialist online dealer?', a: 'Specialist online dealers (bullion/scrap refiners) usually offer better rates than a local jeweller or pawnbroker because refining and reselling gold at scale is their core business, but a local sale avoids postage and lets you inspect the process in person — weigh convenience against the size of the price gap for your specific weight and purity.' },
+  ],
+  sellGuideHtml: `
+  <h2 class="st">What Percentage Do Gold Dealers Actually Pay?</h2>
+  <table style="width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem;">
+    <thead><tr style="background:var(--brand);color:#fff;"><th style="padding:10px 14px;text-align:left;">Seller type</th><th style="padding:10px 14px;text-align:left;">Typical % of spot (indicative)</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">Specialist bullion/scrap dealers</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">~80-92%</td></tr>
+      <tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">High-street jewellers</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">~65-85%</td></tr>
+      <tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">Pawnbrokers &amp; cash-for-gold shops</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">~50-75%</td></tr>
+      <tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">Postal cash-for-gold services</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">~60-85%</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.82rem;color:var(--muted);">Indicative ranges only, based on typical UK market patterns — not a quote from any specific dealer, and actual offers vary by weight, purity and how competitive a particular buyer is on the day.</p>
+
+  <h2 class="st">Questions to Ask Before You Sell</h2>
+  <ul style="margin:0 0 20px 20px;line-height:1.9;color:#3d3520;">
+    <li>Will you test the purity in front of me, and how?</li>
+    <li>Is your price based on today's spot rate — what rate are you using right now?</li>
+    <li>Do you value mixed-purity items separately, or all at the lowest purity present?</li>
+    <li>Is the quote in writing, and does it expire?</li>
+    <li>What's your fee or deduction if I decide not to proceed (especially for postal services)?</li>
+  </ul>
+
+  <h2 class="st">Where to Get a Quote</h2>
+  <p>This site doesn't buy gold itself — it's a price reference, not a dealer. A few well-known UK options if you want to compare quotes (not endorsements, and not a complete list):</p>
+  <div class="link-grid">
+    <a class="link-card" href="https://www.bullionbypost.co.uk/" target="_blank" rel="noopener noreferrer"><div class="t">BullionByPost</div><div class="sub">Online bullion dealer</div></a>
+    <a class="link-card" href="https://www.gold.co.uk/" target="_blank" rel="noopener noreferrer"><div class="t">Gold.co.uk</div><div class="sub">Online bullion dealer</div></a>
+    <a class="link-card" href="https://www.hattongardenmetals.com/" target="_blank" rel="noopener noreferrer"><div class="t">Hatton Garden Metals</div><div class="sub">Refiner, London</div></a>
+  </div>
+  <p style="font-size:.78rem;color:var(--muted);">Always get at least two or three quotes before selling — prices and service quality vary.</p>
+`,
+};
+
+const OUNCE_PAGE = {
+  slug: 'gold-price-per-ounce-uk',
+  title: 'Gold Price Per Ounce UK Today — Live Troy Ounce Calculator',
+  metaDesc: 'Live gold price per troy ounce in the UK today, GBP, by purity (24k, 22k, 18k, 9ct). The bullion-industry standard unit — updated 3× daily.',
+  keywords: 'gold price per ounce uk, gold price per troy ounce uk, gold ounce price uk today, troy ounce gold price gbp',
+  h1: 'Gold Price Per Ounce UK Today',
+  badgeText: 'Troy ounce · bullion standard',
+  intro: 'The gold price per troy ounce in the UK today, in GBP — the standard unit used for bullion bars, coins and interbank spot pricing, as opposed to the per-gram price used for jewellery.',
+  shortLabel: 'Per Ounce',
+  unitLabel: 'troy oz', unitLabelSingular: 'troy oz', unitLabelSingularCap: 'Troy Ounce',
+  gramsPerUnit: CONFIG.troyOzToGrams,
+  step: '0.01', defaultValue: '1',
+  angleTitle: 'Why Gold Is Priced Per Troy Ounce, Not a Standard Ounce',
+  angleBody: 'A troy ounce (31.1035g) is heavier than the everyday avoirdupois ounce (28.35g) used for food or post — bullion, coins and the interbank spot price are always quoted in troy ounces, a convention dating back to medieval bullion trading. If you\'re pricing a bar, Sovereign or Britannia coin rather than jewellery, this is the unit dealers and price charts will quote.',
+  faq: [
+    { q: 'How many grams are in a troy ounce of gold?', a: 'A troy ounce is 31.1035 grams — heavier than the 28.35g "standard" (avoirdupois) ounce used for everyday weights. All gold bullion and spot prices use the troy ounce.' },
+    { q: 'Is the gold price per ounce the same as the spot price?', a: 'For 24k (999.9 fine) gold, yes — the troy ounce price is the raw interbank spot price. For lower purities (22k, 18k, 9ct etc.), the per-ounce price is the spot price scaled down by that purity\'s fine-gold fraction.' },
+    { q: 'Why do bullion dealers quote per ounce and jewellers quote per gram?', a: 'Bullion (bars, coins) is bought and sold in large enough units that the troy ounce is a practical, industry-standard size. Jewellery pieces are usually a few grams, so pricing per gram is more useful for valuing a ring, chain or bracelet.' },
+  ],
+};
+
+const KG_PAGE = {
+  slug: 'gold-price-per-kg-uk',
+  title: 'Gold Price Per Kg UK Today — Live Kilogram Calculator',
+  metaDesc: 'Live gold price per kilogram in the UK today, GBP, by purity. The wholesale/bulk unit for large bars and institutional trades — updated 3× daily.',
+  keywords: 'gold price per kg uk, gold price per kilogram uk today, gold kilo price uk, gold bar price per kg uk',
+  h1: 'Gold Price Per Kg UK Today',
+  badgeText: 'Kilogram · wholesale/bulk',
+  intro: 'The gold price per kilogram in the UK today, in GBP — the unit used for large bullion bars (a standard "good delivery" bar is roughly 12.4kg) and bulk or institutional-scale gold trades.',
+  shortLabel: 'Per Kg',
+  unitLabel: 'kg', unitLabelSingular: 'kg', unitLabelSingularCap: 'Kilogram',
+  gramsPerUnit: 1000,
+  step: '0.001', defaultValue: '1',
+  angleTitle: 'Gold Price Per Kilogram — Bulk & Bar Pricing',
+  angleBody: 'A kilogram of gold is 1,000 grams — a size relevant to 1kg investment bars, or for scaling up a per-gram price to value a larger holding, estate or bulk lot without doing the multiplication by hand. Large "good delivery" bars used in the London bullion market are around 12.4kg (400 troy oz), so this unit is also a useful reference point when that figure is quoted.',
+  faq: [
+    { q: 'How much does 1kg of 24 carat gold cost in the UK?', a: 'Multiply the live 24 carat price per gram by 1,000 — the calculator above does this instantly and updates with the live spot price.' },
+    { q: 'What is a "good delivery" gold bar?', a: 'The London bullion market\'s standard wholesale bar, weighing approximately 400 troy ounces (about 12.4kg) of gold at a minimum 995 fineness — the benchmark unit for institutional gold trading, distinct from the smaller 1kg or 1oz bars sold to retail investors.' },
+    { q: 'Is buying gold by the kilogram cheaper per gram than buying small bars?', a: 'Generally yes — larger bars carry a smaller fabrication/premium markup per gram than small bars or coins, though this calculator shows the raw spot-based price only, not dealer premiums.' },
+  ],
+};
+
+const COINS = {
+  fullSovereign: { label: 'Full Sovereign', weightG: 7.98805, purity: '22k', purityLabel: '22 carat (916)' },
+  halfSovereign: { label: 'Half Sovereign', weightG: 3.99403, purity: '22k', purityLabel: '22 carat (916)' },
+  britannia: { label: 'Britannia (1oz)', weightG: 31.1035, purity: '24k', purityLabel: '24 carat (999.9)' },
+};
+
+const SOVEREIGN_PAGE = {
+  slug: 'gold-sovereign-price-uk',
+  title: 'Gold Sovereign Price UK Today — Live Calculator (Full & Half Sovereign)',
+  metaDesc: 'Live gold Sovereign and half Sovereign price UK today, GBP — plus whether Sovereigns and Britannias are Capital Gains Tax-free for UK residents.',
+  keywords: 'gold sovereign price uk, half sovereign price uk, sovereign coin gold price today, are gold sovereigns tax free uk, gold sovereign cgt exempt',
+  h1: 'Gold Sovereign Price UK Today',
+  faq: [
+    { q: 'What is a gold Sovereign made of?', a: 'A full Sovereign weighs 7.98805g at 22 carat (916, 91.6% pure) gold — the same purity used in South Asian wedding jewellery, though the Sovereign is a UK-minted legal tender coin rather than a piece of jewellery.' },
+    { q: 'Are gold Sovereigns free of Capital Gains Tax in the UK?', a: 'For UK residents, gains on UK legal tender gold coins — including Sovereigns, half-Sovereigns and Britannias minted by the Royal Mint — are generally exempt from Capital Gains Tax, because they count as sterling currency rather than a chargeable asset. This is general information, not personal tax advice; confirm your own position with HMRC or an accountant, especially if you deal in coins as a trade or aren\'t UK tax resident.' },
+    { q: 'Is a Krugerrand also Capital Gains Tax-free in the UK?', a: 'No — the South African Krugerrand is not UK legal tender, so it does not qualify for the same CGT exemption as Sovereigns or Britannias. This distinction is a common reason UK buyers specifically choose UK-minted coins for investment.' },
+    { q: 'What is the difference between a Sovereign and a Britannia?', a: 'A Sovereign is 22 carat gold (916) weighing 7.98805g, with a long numismatic history dating to 1817. A Britannia is 24 carat (999.9 fine) gold, typically sold in 1 troy oz size, introduced more recently as a pure-gold investment coin. Both are UK legal tender and both benefit from the same CGT exemption for UK residents.' },
+  ],
+};
+
+const HISTORY_PAGE = {
+  slug: 'gold-price-history-uk',
+  title: 'Gold Price History UK — Live Chart & Data Per Gram (GBP)',
+  metaDesc: 'Gold price history UK per gram in GBP, charted from real live-tracked data — not a scraped estimate. See the trend, high/low and % change since tracking began.',
+  keywords: 'gold price history uk, gold price chart uk, gold price per gram history, gold price uk over time',
+  h1: 'Gold Price History UK',
+  faq: [
+    { q: 'Where does this historical gold price data come from?', a: 'Every point on this chart is a real price this site fetched and published live, three times a day, since tracking began — not a scraped or reconstructed estimate. The archive grows automatically with each update, so the further back in time you look, the more of the chart is genuine recorded history.' },
+    { q: 'Why does the chart only cover a few weeks/months so far?', a: 'The tracker is actively building its own historical archive in real time rather than backfilling with third-party data of unknown accuracy. Longer ranges (6 months, 1 year, 5 years) will appear automatically as the site continues running — check the "tracking since" date on this page.' },
+    { q: 'How often is the gold price history updated?', a: 'A new data point is added roughly three times a day, in step with the live price refresh — see the methodology page for the exact schedule.' },
   ],
 };
 
@@ -411,6 +521,9 @@ ${siteBanner()}
   <div class="link-grid">
     ${relatedCaratLinks(key)}
     <a class="link-card" href="/scrap-gold-price-per-gram-uk/"><div class="t">Scrap Gold</div><div class="sub">Selling &amp; dealer estimate</div></a>
+    <a class="link-card" href="/gold-price-history-uk/"><div class="t">Price History</div><div class="sub">Chart &amp; trend</div></a>
+    <a class="link-card" href="/gold-price-per-ounce-uk/"><div class="t">Per Troy Ounce</div><div class="sub">Bullion-unit pricing</div></a>
+    <a class="link-card" href="/gold-sovereign-price-uk/"><div class="t">Sovereign Coins</div><div class="sub">Sovereign, half-Sovereign, Britannia</div></a>
     <a class="link-card" href="/"><div class="t">Main Calculator</div><div class="sub">All purities in one tool</div></a>
     <a class="link-card" href="/methodology/"><div class="t">Methodology</div><div class="sub">Data source &amp; formula</div></a>
   </div>
@@ -568,11 +681,12 @@ ${siteBanner()}
 <div class="content">
   <h2 class="st">${page.angleTitle}</h2>
   <p>${page.angleBody}</p>
-
+${page.sellGuideHtml || ''}
   <h2 class="st">Other Pages</h2>
   <div class="link-grid">
     ${relatedCaratLinks('')}
     <a class="link-card" href="/"><div class="t">Main Calculator</div><div class="sub">All purities in one tool</div></a>
+    <a class="link-card" href="/gold-sovereign-price-uk/"><div class="t">Sovereign Coins</div><div class="sub">Sovereign, half-Sovereign, Britannia</div></a>
     <a class="link-card" href="/methodology/"><div class="t">Methodology</div><div class="sub">Data source &amp; formula</div></a>
   </div>
 
@@ -724,6 +838,467 @@ ${eeatBlock()}
 `;
 }
 
+function buildUnitPage(page) {
+  const jsonLd = `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "${page.h1} Calculator",
+      "url": "${SITE_URL}/${page.slug}/",
+      "description": "${page.metaDesc}",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "inLanguage": "en-GB",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+${faqJsonLd(page.faq)}
+      ]
+    },
+    {
+      "@type": "Organization",
+      "name": "Gold Price Per Gram UK",
+      "legalName": "Gesmine-Invest Limited",
+      "identifier": { "@type": "PropertyValue", "propertyID": "UK Company Number", "value": "14120136" },
+      "address": { "@type": "PostalAddress", "streetAddress": "Hardy House, 269 Poynders Gardens", "addressLocality": "London", "postalCode": "SW4 8PQ", "addressCountry": "GB" }
+    }
+  ]
+}
+</script>`;
+
+  const options = CARAT_KEYS.map(k => `<option value="${k}"${k === '24k' ? ' selected' : ''}>${CARATS[k].label} (${CARATS[k].shortLabel}) — ${CARATS[k].hallmark}</option>`).join('\n          ');
+  const tableRows = CARAT_KEYS.map(k => `<tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${CARATS[k].label} (${CARATS[k].shortLabel})</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);" id="row-${k}">—</td></tr>`).join('\n      ');
+
+  return `<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+${headBoilerplate(page, null)}
+
+<!-- START_PRICE_DATA -->
+<script>window.GOLD_DATA = ${JSON.stringify(require('./gold-data.json'))};</script>
+<!-- END_PRICE_DATA -->
+
+${jsonLd}
+${SHARED_STYLE}
+<style>select{border:2px solid var(--border);border-radius:8px;padding:12px 14px;font-size:1rem;color:var(--text);background:#fff;width:100%;}select:focus{outline:none;border-color:var(--brand);}</style>
+</head>
+<body>
+
+${siteBanner()}
+
+<header>
+  <div class="container">
+    <div class="badge">⚖️ ${page.badgeText} · updated 3×/day</div>
+    <h1>${page.h1}</h1>
+    <p>${page.intro}</p>
+  </div>
+</header>
+
+<div class="container">
+<div class="tool-wrapper">
+  <div class="tool-card">
+    <div class="refresh-line" id="refreshLine">Last refreshed: —</div>
+    <div class="fallback-banner" id="fallbackBanner">⚠ Using cached rate — live API temporarily unavailable</div>
+    <div class="form-grid" style="max-width:420px;">
+      <div class="form-group">
+        <label>Weight (${page.unitLabel})</label>
+        <input type="number" id="wUnit" min="0.001" step="${page.step}" value="${page.defaultValue}" placeholder="e.g. ${page.defaultValue}">
+      </div>
+      <div class="form-group">
+        <label>Purity</label>
+        <select id="purity">
+          ${options}
+        </select>
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calculate()">Calculate ${page.shortLabel} Gold Price →</button>
+
+    <div class="result" id="result">
+      <div class="result-hero">
+        <div class="rl">Total value (GBP)</div>
+        <div class="ra" id="r-total"></div>
+        <div class="rs" id="r-sub"></div>
+      </div>
+      <div class="result-grid">
+        <div class="r-stat"><div class="sv" id="r-perUnit"></div><div class="sl">Price per ${page.unitLabelSingular}</div></div>
+        <div class="r-stat"><div class="sv" id="r-perGram"></div><div class="sl">Price per gram</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <h2 class="st">Gold Price Per ${page.unitLabelSingularCap} UK — By Purity Today</h2>
+  <table style="width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem;">
+    <thead><tr style="background:var(--brand);color:#fff;"><th style="padding:10px 14px;text-align:left;">Purity</th><th style="padding:10px 14px;text-align:left;">Price per ${page.unitLabelSingular} (GBP)</th></tr></thead>
+    <tbody id="unitTable">
+      ${tableRows}
+    </tbody>
+  </table>
+
+  <h2 class="st">${page.angleTitle}</h2>
+  <p>${page.angleBody}</p>
+
+  <h2 class="st">Other Units &amp; Related Pages</h2>
+  <div class="link-grid">
+    ${relatedCaratLinks('')}
+    <a class="link-card" href="/gold-price-history-uk/"><div class="t">Price History</div><div class="sub">Chart &amp; trend</div></a>
+    <a class="link-card" href="/scrap-gold-price-per-gram-uk/"><div class="t">Scrap Gold</div><div class="sub">Selling &amp; dealer estimate</div></a>
+    <a class="link-card" href="/methodology/"><div class="t">Methodology</div><div class="sub">Data source &amp; formula</div></a>
+  </div>
+
+  <h2 class="st">Frequently Asked Questions</h2>
+${faqHtml(page.faq)}
+</div>
+</div>
+
+${eeatBlock()}
+
+<footer>
+  <div class="container">
+    <div class="disc">Prices are an indicative live spot rate, not a dealer quote — always confirm with a dealer before selling. Data source: goldapi.io.</div>
+    <p><a href="/methodology/">Methodology</a> · Gold Price Per Gram UK</p>
+    <p style="font-size:.72rem;margin-top:8px;">Gold Price Per Gram calculators are part of Gesmine-Invest Limited, registered UK company number 14120136, registered office address at Hardy House, 269 Poynders Gardens, London, London, United Kingdom, SW4 8PQ.</p>
+  </div>
+</footer>
+
+<script>
+const GRAMS_PER_UNIT = ${page.gramsPerUnit};
+function fmtGBP(n){ return '£' + n.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function refreshBanner(){
+  const gd = window.GOLD_DATA;
+  const line = document.getElementById('refreshLine');
+  const banner = document.getElementById('fallbackBanner');
+  line.textContent = gd.lastUpdated ? 'Last refreshed: ' + new Date(gd.lastUpdated).toLocaleString('en-GB', {dateStyle:'medium', timeStyle:'short'}) : 'Last refreshed: pending first update';
+  banner.style.display = gd.isFallback ? 'block' : 'none';
+  populateTable();
+}
+function populateTable(){
+  const gd = window.GOLD_DATA;
+  ${CARAT_KEYS.map(k => `if(gd.pricePerGram['${k}'] != null) document.getElementById('row-${k}').textContent = fmtGBP(gd.pricePerGram['${k}'] * GRAMS_PER_UNIT);`).join('\n  ')}
+}
+function calculate(){
+  const gd = window.GOLD_DATA;
+  const units = parseFloat(document.getElementById('wUnit').value) || 0;
+  const purity = document.getElementById('purity').value;
+  const perGram = gd.pricePerGram[purity];
+  if(perGram == null){ alert('Live price not yet available — please check back shortly.'); return; }
+  if(units<=0){ alert('Please enter a weight.'); return; }
+  const grams = units * GRAMS_PER_UNIT;
+  document.getElementById('r-total').textContent = fmtGBP(perGram*grams);
+  document.getElementById('r-sub').textContent = units+' ${page.unitLabel} · '+purity+' gold';
+  document.getElementById('r-perUnit').textContent = fmtGBP(perGram*GRAMS_PER_UNIT);
+  document.getElementById('r-perGram').textContent = fmtGBP(perGram);
+  document.getElementById('result').style.display='block';
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function toggleFaq(b){ b.classList.toggle('open'); b.nextElementSibling.classList.toggle('open'); }
+refreshBanner();
+fetch('/gold-data.json?t=' + Date.now(), {cache:'no-store'})
+  .then(function(r){ return r.ok ? r.json() : null; })
+  .then(function(fresh){
+    if(fresh && fresh.lastUpdated && new Date(fresh.lastUpdated) > new Date(window.GOLD_DATA.lastUpdated)){
+      window.GOLD_DATA = fresh;
+      refreshBanner();
+    }
+  })
+  .catch(function(){});
+</script>
+</body>
+</html>
+`;
+}
+
+function buildSovereignPage(page) {
+  const jsonLd = `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Gold Sovereign Price UK Calculator",
+      "url": "${SITE_URL}/${page.slug}/",
+      "description": "${page.metaDesc}",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "inLanguage": "en-GB",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+${faqJsonLd(page.faq)}
+      ]
+    },
+    {
+      "@type": "Organization",
+      "name": "Gold Price Per Gram UK",
+      "legalName": "Gesmine-Invest Limited",
+      "identifier": { "@type": "PropertyValue", "propertyID": "UK Company Number", "value": "14120136" },
+      "address": { "@type": "PostalAddress", "streetAddress": "Hardy House, 269 Poynders Gardens", "addressLocality": "London", "postalCode": "SW4 8PQ", "addressCountry": "GB" }
+    }
+  ]
+}
+</script>`;
+
+  const coinRows = Object.entries(COINS).map(([key, c]) =>
+    `<tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${c.label}</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${c.weightG}g</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${c.purityLabel}</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);" id="row-${key}">—</td></tr>`
+  ).join('\n      ');
+
+  const coinOptions = Object.entries(COINS).map(([key, c]) => `<option value="${key}">${c.label}</option>`).join('\n          ');
+
+  return `<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+${headBoilerplate(page, null)}
+
+<!-- START_PRICE_DATA -->
+<script>window.GOLD_DATA = ${JSON.stringify(require('./gold-data.json'))};</script>
+<!-- END_PRICE_DATA -->
+
+${jsonLd}
+${SHARED_STYLE}
+<style>select{border:2px solid var(--border);border-radius:8px;padding:12px 14px;font-size:1rem;color:var(--text);background:#fff;width:100%;}select:focus{outline:none;border-color:var(--brand);}</style>
+</head>
+<body>
+
+${siteBanner()}
+
+<header>
+  <div class="container">
+    <div class="badge">👑 Sovereign · Half Sovereign · Britannia</div>
+    <h1>${page.h1}</h1>
+    <p>Live value of UK gold Sovereign, half Sovereign and Britannia coins, priced from the live spot rate — plus the Capital Gains Tax exemption that makes them a popular UK-specific choice.</p>
+  </div>
+</header>
+
+<div class="container">
+<div class="tool-wrapper">
+  <div class="tool-card">
+    <div class="refresh-line" id="refreshLine">Last refreshed: —</div>
+    <div class="fallback-banner" id="fallbackBanner">⚠ Using cached rate — live API temporarily unavailable</div>
+    <div class="form-grid" style="max-width:420px;">
+      <div class="form-group">
+        <label>Coin</label>
+        <select id="coin">
+          ${coinOptions}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="number" id="qty" min="1" step="1" value="1" placeholder="e.g. 1">
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calculate()">Calculate Coin Value →</button>
+
+    <div class="result" id="result">
+      <div class="result-hero">
+        <div class="rl">Total value (GBP)</div>
+        <div class="ra" id="r-total"></div>
+        <div class="rs" id="r-sub"></div>
+      </div>
+      <div class="result-grid">
+        <div class="r-stat"><div class="sv" id="r-perCoin"></div><div class="sl">Price per coin</div></div>
+        <div class="r-stat"><div class="sv" id="r-weight"></div><div class="sl">Weight &amp; purity</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <h2 class="st">Gold Coin Prices UK Today</h2>
+  <table style="width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem;">
+    <thead><tr style="background:var(--brand);color:#fff;"><th style="padding:10px 14px;text-align:left;">Coin</th><th style="padding:10px 14px;text-align:left;">Weight</th><th style="padding:10px 14px;text-align:left;">Purity</th><th style="padding:10px 14px;text-align:left;">Value (GBP)</th></tr></thead>
+    <tbody>
+      ${coinRows}
+    </tbody>
+  </table>
+
+  <h2 class="st">Are Gold Sovereigns Tax-Free in the UK?</h2>
+  <p>For UK residents, one of the main reasons Sovereigns, half-Sovereigns and Britannias are popular over other bullion is that gains on UK legal tender coins are generally exempt from Capital Gains Tax — they're treated as sterling currency rather than a chargeable asset, regardless of how much the coin has risen in value. A South African Krugerrand or a gold bar, by contrast, doesn't carry this exemption since it isn't UK legal tender.</p>
+  <p style="font-size:.85rem;background:var(--brand-light);border-radius:8px;padding:14px 16px;">This is general information, not personal tax advice. Your own position can depend on residency, whether you deal in coins as a trade, and current HMRC rules — confirm with <a href="https://www.gov.uk/capital-gains-tax" target="_blank" rel="noopener">HMRC</a> or an accountant before relying on it.</p>
+
+  <h2 class="st">Sovereign vs Half Sovereign vs Britannia</h2>
+  <p>The Sovereign (7.98805g, 22 carat/916) has been minted since 1817 and is the classic UK gold coin, with the half Sovereign its smaller counterpart at exactly half the gold content. The Britannia is a newer, purer alternative — 24 carat (999.9 fine), usually sold as a 1 troy oz coin — aimed squarely at investors who want minimal alloy. All three are UK legal tender and share the same CGT treatment for UK residents.</p>
+
+  <h2 class="st">Other Pages</h2>
+  <div class="link-grid">
+    ${relatedCaratLinks('')}
+    <a class="link-card" href="/gold-price-per-ounce-uk/"><div class="t">Per Troy Ounce</div><div class="sub">Bullion-unit pricing</div></a>
+    <a class="link-card" href="/gold-price-history-uk/"><div class="t">Price History</div><div class="sub">Chart &amp; trend</div></a>
+    <a class="link-card" href="/methodology/"><div class="t">Methodology</div><div class="sub">Data source &amp; formula</div></a>
+  </div>
+
+  <h2 class="st">Frequently Asked Questions</h2>
+${faqHtml(page.faq)}
+</div>
+</div>
+
+${eeatBlock()}
+
+<footer>
+  <div class="container">
+    <div class="disc">Prices are an indicative live spot rate, not a dealer quote — always confirm with a dealer before selling. Not tax advice — confirm your position with HMRC or an accountant. Data source: goldapi.io.</div>
+    <p><a href="/methodology/">Methodology</a> · Gold Price Per Gram UK</p>
+    <p style="font-size:.72rem;margin-top:8px;">Gold Price Per Gram calculators are part of Gesmine-Invest Limited, registered UK company number 14120136, registered office address at Hardy House, 269 Poynders Gardens, London, London, United Kingdom, SW4 8PQ.</p>
+  </div>
+</footer>
+
+<script>
+const COINS = ${JSON.stringify(Object.fromEntries(Object.entries(COINS).map(([k, c]) => [k, { weightG: c.weightG, purity: c.purity, label: c.label, purityLabel: c.purityLabel }])))};
+function fmtGBP(n){ return '£' + n.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function refreshBanner(){
+  const gd = window.GOLD_DATA;
+  const line = document.getElementById('refreshLine');
+  const banner = document.getElementById('fallbackBanner');
+  line.textContent = gd.lastUpdated ? 'Last refreshed: ' + new Date(gd.lastUpdated).toLocaleString('en-GB', {dateStyle:'medium', timeStyle:'short'}) : 'Last refreshed: pending first update';
+  banner.style.display = gd.isFallback ? 'block' : 'none';
+  populateTable();
+}
+function populateTable(){
+  const gd = window.GOLD_DATA;
+  for(const key in COINS){
+    const c = COINS[key];
+    const perGram = gd.pricePerGram[c.purity];
+    const row = document.getElementById('row-'+key);
+    if(row && perGram != null) row.textContent = fmtGBP(perGram * c.weightG);
+  }
+}
+function calculate(){
+  const gd = window.GOLD_DATA;
+  const key = document.getElementById('coin').value;
+  const qty = parseInt(document.getElementById('qty').value, 10) || 0;
+  const c = COINS[key];
+  const perGram = gd.pricePerGram[c.purity];
+  if(perGram == null){ alert('Live price not yet available — please check back shortly.'); return; }
+  if(qty<=0){ alert('Please enter a quantity.'); return; }
+  const perCoin = perGram * c.weightG;
+  document.getElementById('r-total').textContent = fmtGBP(perCoin*qty);
+  document.getElementById('r-sub').textContent = qty+' × '+c.label;
+  document.getElementById('r-perCoin').textContent = fmtGBP(perCoin);
+  document.getElementById('r-weight').textContent = c.weightG+'g · '+c.purityLabel;
+  document.getElementById('result').style.display='block';
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function toggleFaq(b){ b.classList.toggle('open'); b.nextElementSibling.classList.toggle('open'); }
+refreshBanner();
+fetch('/gold-data.json?t=' + Date.now(), {cache:'no-store'})
+  .then(function(r){ return r.ok ? r.json() : null; })
+  .then(function(fresh){
+    if(fresh && fresh.lastUpdated && new Date(fresh.lastUpdated) > new Date(window.GOLD_DATA.lastUpdated)){
+      window.GOLD_DATA = fresh;
+      refreshBanner();
+    }
+  })
+  .catch(function(){});
+</script>
+</body>
+</html>
+`;
+}
+
+function buildHistoryPage(page) {
+  const jsonLd = `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+${faqJsonLd(page.faq)}
+      ]
+    },
+    {
+      "@type": "Organization",
+      "name": "Gold Price Per Gram UK",
+      "legalName": "Gesmine-Invest Limited",
+      "identifier": { "@type": "PropertyValue", "propertyID": "UK Company Number", "value": "14120136" },
+      "address": { "@type": "PostalAddress", "streetAddress": "Hardy House, 269 Poynders Gardens", "addressLocality": "London", "postalCode": "SW4 8PQ", "addressCountry": "GB" }
+    }
+  ]
+}
+</script>`;
+
+  const stats = buildStats(HISTORY, 'g24k');
+  const svg = buildSVG(HISTORY, 'g24k');
+  const statsSummary = stats
+    ? `Since ${stats.fromDate}, the live-tracked 24 carat gold price per gram has moved between <strong>£${stats.min.toFixed(2)}</strong> and <strong>£${stats.max.toFixed(2)}</strong>, a ${stats.changePct >= 0 ? 'rise' : 'fall'} of ${Math.abs(stats.changePct).toFixed(1)}% over ${stats.days} day${stats.days === 1 ? '' : 's'} (${stats.points} tracked data points).`
+    : 'The historical archive is just starting to build — check back after a few days of tracking for a chart.';
+
+  return `<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+${headBoilerplate(page, null)}
+
+<!-- START_PRICE_DATA -->
+<script>window.GOLD_DATA = ${JSON.stringify(require('./gold-data.json'))};</script>
+<!-- END_PRICE_DATA -->
+
+${jsonLd}
+${SHARED_STYLE}
+<style>.chart-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px 20px;margin:0 0 8px;box-shadow:0 8px 40px rgba(107,77,5,.10);} .chart-card svg{width:100%;height:auto;display:block;} .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;} @media (max-width:480px){.stat-row{grid-template-columns:1fr;}} .stat-row .r-stat{background:var(--brand-light);}</style>
+</head>
+<body>
+
+${siteBanner()}
+
+<header>
+  <div class="container">
+    <div class="badge">📈 Real tracked data · updated 3×/day</div>
+    <h1>${page.h1}</h1>
+    <p>The gold price per gram in the UK, charted from data this site has actually recorded live — no scraped or reconstructed history.</p>
+  </div>
+</header>
+
+<div class="container">
+<div class="tool-wrapper">
+  <div class="chart-card">
+    <!-- START_HISTORY_CHART -->
+${svg}
+<script>window.GOLD_HISTORY_STATS = ${JSON.stringify(stats)};</script>
+    <!-- END_HISTORY_CHART -->
+    <p style="font-size:.82rem;color:var(--muted);margin-top:10px;text-align:center;">24 carat (24k) gold price per gram, GBP — tracking since ${stats ? stats.fromDate : 'launch'}.</p>
+  </div>
+</div>
+
+<div class="content">
+  <h2 class="st">Gold Price Per Gram UK — Trend Summary</h2>
+  <p>${statsSummary}</p>
+  <p>Want today's exact figure instead of the trend? Use the <a href="/">live calculator</a> for the current price by purity, or the <a href="/scrap-gold-price-per-gram-uk/">scrap gold page</a> if you're pricing jewellery to sell.</p>
+
+  <h2 class="st">Other Purities &amp; Related Pages</h2>
+  <div class="link-grid">
+    ${relatedCaratLinks('')}
+    <a class="link-card" href="/gold-price-per-ounce-uk/"><div class="t">Per Troy Ounce</div><div class="sub">Bullion-unit pricing</div></a>
+    <a class="link-card" href="/gold-price-per-kg-uk/"><div class="t">Per Kilogram</div><div class="sub">Bulk/wholesale pricing</div></a>
+    <a class="link-card" href="/methodology/"><div class="t">Methodology</div><div class="sub">Data source &amp; formula</div></a>
+  </div>
+
+  <h2 class="st">Frequently Asked Questions</h2>
+${faqHtml(page.faq)}
+</div>
+</div>
+
+${eeatBlock()}
+
+<footer>
+  <div class="container">
+    <div class="disc">Prices are an indicative live spot rate, not a dealer quote — always confirm with a dealer before selling. Data source: goldapi.io.</div>
+    <p><a href="/methodology/">Methodology</a> · Gold Price Per Gram UK</p>
+    <p style="font-size:.72rem;margin-top:8px;">Gold Price Per Gram calculators are part of Gesmine-Invest Limited, registered UK company number 14120136, registered office address at Hardy House, 269 Poynders Gardens, London, London, United Kingdom, SW4 8PQ.</p>
+  </div>
+</footer>
+
+<script>function toggleFaq(b){ b.classList.toggle('open'); b.nextElementSibling.classList.toggle('open'); }</script>
+</body>
+</html>
+`;
+}
+
 // --- Write files ---
 for (const key of CARAT_KEYS) {
   const page = CARATS[key];
@@ -740,5 +1315,19 @@ console.log(`✓ ${SCRAP_PAGE.slug}/index.html`);
 fs.mkdirSync(path.join(ROOT, METHODOLOGY_PAGE.slug), { recursive: true });
 fs.writeFileSync(path.join(ROOT, METHODOLOGY_PAGE.slug, 'index.html'), buildMethodologyPage(METHODOLOGY_PAGE));
 console.log(`✓ ${METHODOLOGY_PAGE.slug}/index.html`);
+
+fs.mkdirSync(path.join(ROOT, HISTORY_PAGE.slug), { recursive: true });
+fs.writeFileSync(path.join(ROOT, HISTORY_PAGE.slug, 'index.html'), buildHistoryPage(HISTORY_PAGE));
+console.log(`✓ ${HISTORY_PAGE.slug}/index.html`);
+
+for (const unitPage of [OUNCE_PAGE, KG_PAGE]) {
+  fs.mkdirSync(path.join(ROOT, unitPage.slug), { recursive: true });
+  fs.writeFileSync(path.join(ROOT, unitPage.slug, 'index.html'), buildUnitPage(unitPage));
+  console.log(`✓ ${unitPage.slug}/index.html`);
+}
+
+fs.mkdirSync(path.join(ROOT, SOVEREIGN_PAGE.slug), { recursive: true });
+fs.writeFileSync(path.join(ROOT, SOVEREIGN_PAGE.slug, 'index.html'), buildSovereignPage(SOVEREIGN_PAGE));
+console.log(`✓ ${SOVEREIGN_PAGE.slug}/index.html`);
 
 console.log('Done. Run update-data.js next to inject live prices.');
