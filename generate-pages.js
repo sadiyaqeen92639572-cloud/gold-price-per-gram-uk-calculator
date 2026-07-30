@@ -782,17 +782,19 @@ ${siteBanner()}
   <div class="method">
     <div class="code">
 <span>price_per_gram(24k) = spot_price_per_troy_oz(GBP) / 31.1035</span><br>
-<span>price_per_gram(purity) = price_per_gram(24k) × purity_fraction</span><br>
+<span>price_per_gram(22k, 21k, 18k, 14k) = goldapi.io's own per-carat quote field (its true fine-gold ratio, not a fixed rounded fraction)</span><br>
+<span>price_per_gram(9ct) = price_per_gram(24k) × 0.375  (fallback formula, used because goldapi.io has no 9ct field)</span><br>
 <span>scrap_estimate(purity) = price_per_gram(purity) × dealer_discount_factor</span>
     </div>
+    <p style="font-size:.85rem;color:var(--muted);">The reference fractions in the table below are shown for comparison and used only as a fallback if goldapi.io's live per-carat field is ever missing — in normal operation, 22k/21k/18k/14k prices come directly from goldapi.io's own quote for that carat, which can differ very slightly (typically under 0.3%) from a simple 24k × nominal-hallmark-fraction calculation.</p>
     <p id="liveExample" style="font-size:.85rem;color:var(--muted);"></p>
   </div>
 
-  <h2 class="st">Purity Fractions Used</h2>
+  <h2 class="st">Purity Fractions — Reference &amp; Fallback Values</h2>
   <table style="width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem;">
-    <thead><tr style="background:var(--brand);color:#fff;"><th style="padding:10px 14px;text-align:left;">Purity</th><th style="padding:10px 14px;text-align:left;">Hallmark</th><th style="padding:10px 14px;text-align:left;">Fine gold fraction</th></tr></thead>
+    <thead><tr style="background:var(--brand);color:#fff;"><th style="padding:10px 14px;text-align:left;">Purity</th><th style="padding:10px 14px;text-align:left;">Hallmark</th><th style="padding:10px 14px;text-align:left;">Reference fraction</th><th style="padding:10px 14px;text-align:left;">Price source</th></tr></thead>
     <tbody>
-      ${CARAT_KEYS.map(k => `<tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${CARATS[k].label}</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${CARATS[k].hallmark}</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${CONFIG.purities[k].fraction}</td></tr>`).join('\n      ')}
+      ${CARAT_KEYS.map(k => `<tr><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${CARATS[k].label}</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${CARATS[k].hallmark}</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${CONFIG.purities[k].fraction}</td><td style="padding:10px 14px;border-bottom:1px solid var(--border);">${CONFIG.purities[k].apiField ? 'Direct goldapi.io field' : (k === '24k' ? 'Spot ÷ 31.1035' : '24k × fraction (fallback formula)')}</td></tr>`).join('\n      ')}
     </tbody>
   </table>
 
