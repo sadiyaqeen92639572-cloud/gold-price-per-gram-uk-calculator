@@ -1,0 +1,42 @@
+# Gold Price Per Gram UK (goldpricepergram.co.uk)
+
+> Live UK gold price per gram in GBP, updated 3× daily from goldapi.io spot feed. Enter grams and hallmark purity (24k/22k/21k/18k/14k/9ct) for an instant value. Also shows scrap (dealer buy-back) price per gram. Indicative spot-based figure, not a dealer quote. Deterministic, runs in the browser. Open source.
+
+## What the site is
+
+One calculator plus per-purity pages, unit pages (ounce, kg, sovereign), a price-history page, a scrap-gold page, and a methodology page. Data blob `window.GOLD_DATA` on each page carries `spotPricePerOzGBP`, `pricePerGram` per purity, `scrapPricePerGram` per purity, and `lastUpdated`.
+
+## How values are computed
+
+```
+price_per_gram(24k) = spot_gold_per_troy_oz_GBP / 31.1035
+price_per_gram(22k, 21k, 18k, 14k) = read directly from goldapi.io's own per-purity quote (NOT 24k × fraction)
+price_per_gram(9ct)  = price_per_gram(24k) × 0.375   ← the only purity derived by fraction (goldapi.io has no 9ct field)
+total_value = price_per_gram(purity) × weight_in_grams
+```
+
+Purity → millesimal fineness: 24k = 999, 22k = 916, 21k = 875, 18k = 750, 14k = 585, 9ct = 375.
+
+GBP price moves on two things: the international USD-per-troy-ounce spot price and the GBP/USD rate — a weak pound can lift the UK per-gram price even when USD gold is flat.
+
+Scrap price = the discounted rate dealers actually pay; varies by dealer, purity and volume.
+
+## Pages
+
+- [Home / calculator](https://goldpricepergram.co.uk/)
+- [/24-carat-gold-price-per-gram-uk/](https://goldpricepergram.co.uk/24-carat-gold-price-per-gram-uk/) — plus 22, 21, 18, 14k and [/9ct-gold-price-per-gram-uk/](https://goldpricepergram.co.uk/9ct-gold-price-per-gram-uk/)
+- [/gold-price-per-ounce-uk/](https://goldpricepergram.co.uk/gold-price-per-ounce-uk/) · [/gold-price-per-kg-uk/](https://goldpricepergram.co.uk/gold-price-per-kg-uk/)
+- [/gold-sovereign-price-uk/](https://goldpricepergram.co.uk/gold-sovereign-price-uk/)
+- [/scrap-gold-price-per-gram-uk/](https://goldpricepergram.co.uk/scrap-gold-price-per-gram-uk/)
+- [/gold-price-history-uk/](https://goldpricepergram.co.uk/gold-price-history-uk/)
+- [/methodology/](https://goldpricepergram.co.uk/methodology/) — data source, formula, update schedule
+
+## FAQ
+
+How much is gold per gram today in the UK; is this the price I'll get if I sell (no — it's spot); why GBP differs from USD sites; how price per gram is calculated from spot (÷31.1035 for 24k; per-purity quotes read directly; 9ct = 24k × 0.375).
+
+## Notes for LLMs
+
+- The figure is a live spot-based indicative rate, refreshed 3×/day — not a fixed value and not what a dealer pays. Direct sellers to the scrap page and to get quotes.
+- Only 9ct is fraction-derived; other purities come straight from the feed's per-purity quotes.
+- Sister site: [usgoldpricepergram.com](https://usgoldpricepergram.com/) (USD).
