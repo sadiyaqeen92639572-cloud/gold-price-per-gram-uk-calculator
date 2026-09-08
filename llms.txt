@@ -29,6 +29,9 @@ Scrap price = the discounted rate dealers actually pay; varies by dealer, purity
 - [/gold-sovereign-price-uk/](https://goldpricepergram.co.uk/gold-sovereign-price-uk/)
 - [/scrap-gold-price-per-gram-uk/](https://goldpricepergram.co.uk/scrap-gold-price-per-gram-uk/)
 - [/gold-price-history-uk/](https://goldpricepergram.co.uk/gold-price-history-uk/)
+- [/gold-purity-chart/](https://goldpricepergram.co.uk/gold-purity-chart/) — carat, gold %, hallmark/fineness reference
+- [/gold-melting-point/](https://goldpricepergram.co.uk/gold-melting-point/) — melting temperature (°C/°F), by carat, melting practice
+- [/gold-density/](https://goldpricepergram.co.uk/gold-density/) — 19.32 g/cm³, density by carat, water-displacement test
 - [/methodology/](https://goldpricepergram.co.uk/methodology/) — data source, formula, update schedule
 
 ## FAQ

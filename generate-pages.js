@@ -261,6 +261,149 @@ const METHODOLOGY_PAGE = {
   h1: 'Methodology',
 };
 
+// --- Batch of pure-content informational guides (no calculator, no live price, no
+// GOLD_DATA marker, NOT in site.config.json). Rendered by buildInfoPage(). Topics are
+// deliberately disjoint from the US sister site's info batch (why gold is rising /
+// gold-plated tarnish / white gold) so the two properties never run duplicate content. ---
+
+const MELTING_POINT_PAGE = {
+  slug: 'gold-melting-point',
+  title: 'Gold Melting Point — Temperature in °C, °F and by Carat',
+  metaDesc: 'Pure gold melts at 1,064°C (1,947°F). Gold alloys melt lower and over a range. Melting temperatures by carat, how gold is melted, and using melting point to spot fakes.',
+  keywords: 'gold melting point, melting point of gold, gold melting temperature, what temperature does gold melt, gold melting point celsius',
+  h1: 'Gold Melting Point',
+  intro: 'Pure (24 carat) gold melts at 1,064.18°C — that is 1,947.5°F or 1,337.3 K — and boils at roughly 2,856°C. Gold alloys used in jewellery melt at lower temperatures and over a range rather than at a single point, so a 9ct or 18ct piece behaves differently under a torch from pure gold. Here are the numbers by carat, how gold is actually melted, and why melting point is a useful authenticity check.',
+  sections: [
+    { h2: 'Melting and boiling point of pure gold', html: `  <p>Pure gold has a melting point of <strong>1,064.18°C (1,947.5°F / 1,337.3 K)</strong> and a boiling point of roughly <strong>2,856°C (5,173°F)</strong>. The energy needed to turn solid gold at its melting point into liquid — the latent heat of fusion — is about 12.55 kJ/mol. Gold is a relatively low-melting precious metal: silver melts at 962°C and copper at 1,085°C, but platinum needs 1,768°C, which is why platinum work requires specialist equipment that ordinary gold work does not.</p>` },
+    { h2: 'Melting point by carat', html: `  <p>Alloy metals lower the melting point and spread it across a <em>range</em> — the alloy starts to soften at the "solidus" temperature and is fully liquid at the "liquidus". Exact figures depend on the specific recipe, but typical values are:</p>
+  <div style="overflow-x:auto;margin:18px 0;">
+  <table style="width:100%;border-collapse:collapse;font-size:.9rem;background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+    <thead><tr style="background:var(--brand-light);"><th style="padding:10px 14px;text-align:left;">Gold</th><th style="padding:10px 14px;text-align:left;">Hallmark</th><th style="padding:10px 14px;text-align:left;">Approx. melting range</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">24 carat (fine)</td><td style="padding:10px 14px;border-top:1px solid var(--border);">999</td><td style="padding:10px 14px;border-top:1px solid var(--border);">1,064°C</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">22 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">916</td><td style="padding:10px 14px;border-top:1px solid var(--border);">~940°C</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">18 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">750</td><td style="padding:10px 14px;border-top:1px solid var(--border);">~880–920°C</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">14 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">585</td><td style="padding:10px 14px;border-top:1px solid var(--border);">~800–880°C</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">9 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">375</td><td style="padding:10px 14px;border-top:1px solid var(--border);">~880–935°C</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>It is not a straight line: a 9ct alloy can melt higher than 14ct because low-gold alloys are dominated by the copper–silver mix rather than the gold. White gold sits higher than yellow gold of the same carat because nickel or palladium raise the melting point, and gold solder is formulated to melt lower still — in "easy", "medium" and "hard" grades — so a jeweller can join a piece without melting the piece itself.</p>` },
+    { h2: 'How gold is melted in practice', html: `  <p>A handheld butane or propane torch reaches 1,200–1,300°C at the tip — enough to melt small amounts of gold in a ceramic or graphite crucible, though heat loss makes it slow and marginal for pure gold. Jewellers and refiners use oxy-propane or oxy-acetylene torches, electric muffle furnaces or induction melters for anything larger. A pinch of borax is added as a flux: it dissolves surface oxides from the alloy metals and helps the molten gold form a clean bead. Molten gold glows bright orange-yellow and pulls itself into a sphere under surface tension.</p>` },
+    { h2: 'Using melting point to spot fake gold', html: `  <p>Melting behaviour is a strong tell. Brass — a common base for fake "gold" bars and jewellery — melts at around 900–940°C, so a supposedly pure gold item that softens well below 1,064°C is suspect. Tungsten, used to fill counterfeit bars because its density nearly matches gold, melts at 3,422°C and will not melt under any jeweller's torch. Melting is destructive, though, so it is a refiner's test rather than a first check — start with the hallmark and weight on the <a href="/scrap-gold-price-per-gram-uk/">scrap gold page</a> and the <a href="/gold-density/">gold density</a> test.</p>` },
+    { h2: 'Does melting gold change its purity?', html: `  <p>Melting pure gold does not reduce its purity — gold does not oxidise or burn, and its boiling point is far above any melting temperature, so losses are negligible. Melting <em>alloyed</em> gold is different: the base metals (copper, zinc) can oxidise and burn off, so a melted-down 9ct or 14ct piece loses a little total weight, but the pure gold content itself is essentially unchanged. Refiners assay the gold after melting to certify the new purity.</p>` },
+  ],
+  faq: [
+    { q: 'What temperature does 9ct, 14ct or 18ct gold melt at?', a: 'Roughly 880–935°C for 9 carat, 800–880°C for 14 carat and 880–920°C for 18 carat, but it depends heavily on the exact alloy — the copper-to-silver ratio and any nickel or palladium shift these figures. Alloyed gold melts over a range, not at one fixed point.' },
+    { q: 'Can I melt gold with a propane torch?', a: 'For small amounts, yes — with a ceramic or graphite crucible, a pinch of borax as flux, and patience, a propane or MAPP torch can melt a few grams. It is slow and marginal for pure 24 carat gold; jewellers use oxy-propane torches, induction melters or a muffle furnace for anything more.' },
+    { q: 'Does melting gold reduce its carat or purity?', a: 'Melting pure gold does not — gold does not burn or evaporate at melting temperatures. Melting lower-carat gold burns off some of the base metals, so the piece loses a little total weight, but the amount of pure gold it contains is essentially unchanged.' },
+    { q: 'What is the boiling point of gold?', a: 'About 2,856°C (5,173°F) — nearly three times its melting point, which is why gold can be melted and cast repeatedly with negligible loss.' },
+    { q: 'Will gold jewellery melt in a house fire?', a: 'A typical house fire burns at around 600–900°C, below gold\'s 1,064°C melting point, so solid gold usually survives. Lower-carat pieces can soften or deform, surfaces discolour, solder joints fail, and any gemstones are often destroyed — so a "fire-damaged" gold item may still be worth its melt value even if it looks ruined.' },
+    { q: 'How much gold is lost when it is melted down?', a: 'Very little of the gold itself. Overall weight loss comes from oxidation of alloy metals and material caught in the flux and crucible — refiners typically quote a small "melt loss" percentage, then assay the result to state the exact remaining purity.' },
+    { q: 'Why does gold melt at a lower temperature than platinum?', a: 'It comes down to metallurgy — the strength of the metallic bonding in each metal. Gold melts at 1,064°C and platinum at 1,768°C, which is why platinum jewellery needs higher-temperature torches and equipment than gold.' },
+  ],
+  relatedCarats: true,
+  related: [
+    ['/gold-density/', 'Gold Density', '19.32 g/cm³ &amp; the fake-gold test'],
+    ['/scrap-gold-price-per-gram-uk/', 'Scrap Gold Price', 'Per gram by carat, GBP'],
+    ['/methodology/', 'Methodology', 'Data source &amp; formula'],
+  ],
+};
+
+const GOLD_DENSITY_PAGE = {
+  slug: 'gold-density',
+  title: 'Density of Gold — 19.32 g/cm³, by Carat, and the Fake-Gold Test',
+  metaDesc: 'Pure gold has a density of 19.32 g/cm³ — nearly twice lead. Density by carat (9ct to 24ct), how the water-displacement test works, and why it cannot catch a tungsten-filled bar.',
+  keywords: 'density of gold, gold density, gold density g/cm3, gold specific gravity, gold density test',
+  h1: 'The Density of Gold',
+  intro: 'Pure gold has a density of 19.32 grams per cubic centimetre — so dense that a litre of it would weigh over 19 kg, nearly twice the weight of the same volume of lead. That density is one of the quickest ways to sanity-check whether an item is solid gold. Here is the density of gold by carat, how to run a density test at home, and the one fake it cannot detect.',
+  sections: [
+    { h2: 'How dense is pure gold?', html: `  <p>The density of pure (24 carat) gold is <strong>19.32 g/cm³</strong>, sometimes quoted as a specific gravity of 19.3 (its density relative to water). For comparison, lead is 11.3 g/cm³, silver 10.5 and iron 7.9 — gold is exceptionally heavy for its size, which is why a genuine gold coin or bar feels denser in the hand than people expect. Only a few metals come close, notably platinum (21.4 g/cm³) and tungsten (19.25 g/cm³).</p>` },
+    { h2: 'Gold density by carat', html: `  <p>Alloy metals are lighter than gold, so the more they dilute it, the lower the density. Typical values (they vary with the exact alloy, especially the copper-to-silver ratio and any nickel in white gold):</p>
+  <div style="overflow-x:auto;margin:18px 0;">
+  <table style="width:100%;border-collapse:collapse;font-size:.9rem;background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+    <thead><tr style="background:var(--brand-light);"><th style="padding:10px 14px;text-align:left;">Gold</th><th style="padding:10px 14px;text-align:left;">Hallmark</th><th style="padding:10px 14px;text-align:left;">Approx. density (g/cm³)</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">24 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">999</td><td style="padding:10px 14px;border-top:1px solid var(--border);">19.32</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">22 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">916</td><td style="padding:10px 14px;border-top:1px solid var(--border);">17.7–17.8</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">18 carat yellow</td><td style="padding:10px 14px;border-top:1px solid var(--border);">750</td><td style="padding:10px 14px;border-top:1px solid var(--border);">15.2–15.9</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">18 carat white</td><td style="padding:10px 14px;border-top:1px solid var(--border);">750</td><td style="padding:10px 14px;border-top:1px solid var(--border);">14.7–16.9</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">14 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">585</td><td style="padding:10px 14px;border-top:1px solid var(--border);">12.9–14.6</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">9 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">375</td><td style="padding:10px 14px;border-top:1px solid var(--border);">11.0–11.3</td></tr>
+    </tbody>
+  </table>
+  </div>` },
+    { h2: 'The water-displacement (Archimedes) test', html: `  <p>You can estimate density at home with a kitchen scale and a cup of water:</p>
+  <ol style="margin:0 0 14px;padding-left:22px;">
+    <li style="margin-bottom:6px;color:#3d3520;">Weigh the dry item in grams — call this <em>W</em>.</li>
+    <li style="margin-bottom:6px;color:#3d3520;">Stand a cup of water on the scale and zero it, then lower the item on a thin thread until it is fully submerged without touching the sides or bottom. The reading the scale now shows is the item's weight in water, <em>D</em>, in grams.</li>
+    <li style="margin-bottom:6px;color:#3d3520;">Density ≈ <em>W ÷ D</em> g/cm³ (1 ml of water weighs 1 g).</li>
+  </ol>
+  <p>Compare the result with the table above. A figure well below the value for the claimed carat suggests a lighter metal inside or a hollow section. The test works best on solid items — gemstones, clasps, hollow chains and glued components all throw it off — and a typical kitchen-scale result is only accurate to within a few percent.</p>` },
+    { h2: 'Why density cannot catch a tungsten fake', html: `  <p>Tungsten has a density of 19.25 g/cm³ against gold's 19.32 — a difference of under 0.4%, far smaller than the error margin of any kitchen-scale test. That is precisely why tungsten is used to core counterfeit gold bars: they pass a density check. Detecting a tungsten-filled bar reliably needs ultrasound (which measures the speed of sound through the metal), electrical conductivity testing, drilling, or an interior scan. In jewellery, tungsten filling is rare — brass, steel and lead fakes are far more common, and the density test catches those easily.</p>` },
+    { h2: 'What the density of gold is useful for', html: `  <p>Beyond spotting obvious fakes, density lets you estimate a piece's weight from its volume (or the reverse) without a scale, check that a bar matches its stated dimensions, and understand why bullion is made in small, heavy units. For pricing rather than testing, use the <a href="/">live per-gram calculator</a> or the <a href="/scrap-gold-price-per-gram-uk/">scrap gold page</a>; to see how carat relates to purity, use the <a href="/gold-purity-chart/">gold purity chart</a>.</p>` },
+  ],
+  faq: [
+    { q: 'What is the density of pure gold?', a: '19.32 grams per cubic centimetre (g/cm³), or a specific gravity of about 19.3. This is for pure 24 carat gold; alloyed gold is less dense.' },
+    { q: 'How do I test gold density at home?', a: 'Weigh the dry item, then weigh it fully submerged in water (suspended so it does not touch the container). Divide the dry weight by the weight of water it displaces. Compare the result with the density expected for its hallmark.' },
+    { q: 'Can a density test detect tungsten-filled gold?', a: 'No. Tungsten\'s density (19.25 g/cm³) is within 0.4% of gold\'s (19.32), which is below the accuracy of any home test — that is why tungsten is used for counterfeit bars. Ultrasound, conductivity testing or drilling is needed to catch it.' },
+    { q: 'What is the density of 9ct, 14ct or 18ct gold?', a: 'Roughly 11.0–11.3 g/cm³ for 9 carat, 12.9–14.6 for 14 carat and 15.2–15.9 for 18 carat yellow gold. White gold varies more because of its nickel or palladium content.' },
+    { q: 'Is gold denser than lead?', a: 'Yes — gold is about 1.7 times as dense as lead (19.32 vs 11.3 g/cm³). A gold bar feels much heavier than a lead object of the same size.' },
+    { q: 'What is the difference between density and specific gravity?', a: 'Specific gravity is density measured relative to water, so it has no units. For gold the two numbers are almost identical: density 19.32 g/cm³, specific gravity ~19.3.' },
+    { q: 'How accurate is the home density test?', a: 'Rough — typically within a few percent, which is enough to expose brass, steel or hollow fakes but not subtle ones. Gemstones and non-solid construction reduce accuracy further.' },
+  ],
+  relatedCarats: true,
+  related: [
+    ['/gold-melting-point/', 'Gold Melting Point', '1,064°C &amp; melting by carat'],
+    ['/gold-purity-chart/', 'Gold Purity Chart', 'Carat, % and hallmark'],
+    ['/scrap-gold-price-per-gram-uk/', 'Scrap Gold Price', 'Per gram by carat, GBP'],
+  ],
+};
+
+const PURITY_CHART_PAGE = {
+  slug: 'gold-purity-chart',
+  title: 'Gold Purity Chart — Carat, Percentage and Hallmark (UK)',
+  metaDesc: 'Gold purity chart: 24ct = 999 (99.9% gold), 22ct = 916, 18ct = 750, 14ct = 585, 9ct = 375. What carat means, how to read a UK hallmark, and how purity sets the price.',
+  keywords: 'gold purity chart, gold carat chart, gold hallmark chart, karat percentages, gold fineness chart, what percentage is 9ct gold',
+  h1: 'Gold Purity Chart',
+  intro: 'Gold purity is measured in carats (ct) out of 24, or as a "fineness" number out of 1,000. 24 carat is 99.9% pure; every lower carat is gold alloyed with other metals for strength and colour. This chart shows the carat, gold percentage and UK hallmark for each standard, plus how to read a hallmark and why purity — not weight alone — drives what a piece is worth.',
+  sections: [
+    { h2: 'Gold purity chart', html: `  <div style="overflow-x:auto;margin:18px 0;">
+  <table style="width:100%;border-collapse:collapse;font-size:.9rem;background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+    <thead><tr style="background:var(--brand-light);"><th style="padding:10px 14px;text-align:left;">Carat</th><th style="padding:10px 14px;text-align:left;">Fineness (hallmark)</th><th style="padding:10px 14px;text-align:left;">Gold content</th><th style="padding:10px 14px;text-align:left;">Typical use</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">24 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">999</td><td style="padding:10px 14px;border-top:1px solid var(--border);">99.9%</td><td style="padding:10px 14px;border-top:1px solid var(--border);">Bullion bars, Britannia &amp; Sovereign coins</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">22 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">916</td><td style="padding:10px 14px;border-top:1px solid var(--border);">91.6%</td><td style="padding:10px 14px;border-top:1px solid var(--border);">South Asian wedding jewellery, older coins</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">21 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">875</td><td style="padding:10px 14px;border-top:1px solid var(--border);">87.5%</td><td style="padding:10px 14px;border-top:1px solid var(--border);">Middle Eastern jewellery</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">18 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">750</td><td style="padding:10px 14px;border-top:1px solid var(--border);">75.0%</td><td style="padding:10px 14px;border-top:1px solid var(--border);">Fine jewellery, engagement rings</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">14 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">585</td><td style="padding:10px 14px;border-top:1px solid var(--border);">58.5%</td><td style="padding:10px 14px;border-top:1px solid var(--border);">Jewellery (common in the US and Europe)</td></tr>
+      <tr><td style="padding:10px 14px;border-top:1px solid var(--border);">9 carat</td><td style="padding:10px 14px;border-top:1px solid var(--border);">375</td><td style="padding:10px 14px;border-top:1px solid var(--border);">37.5%</td><td style="padding:10px 14px;border-top:1px solid var(--border);">Most gold jewellery sold in the UK</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>10 carat (417, 41.7%) is the lowest that can be sold as "gold" in the United States but is not a UK standard. Anything below 9 carat cannot legally be described as gold in the UK.</p>` },
+    { h2: 'Carat vs karat vs fineness', html: `  <p>"Carat" (ct) and "karat" (kt or k) are the same measure of gold purity — the UK spelling is "carat", the US spelling "karat". Do not confuse it with the carat used for diamond <em>weight</em>, which is unrelated. Fineness expresses the same thing per 1,000: 18 carat is 18/24 = 0.750 = "750". UK hallmarks use the fineness number, so a ring stamped "375" is 9 carat.</p>` },
+    { h2: 'Why 24 carat gold is rarely used for jewellery', html: `  <p>Pure gold is soft — it scratches, bends and wears quickly. Alloying it with copper, silver, palladium or zinc adds hardness and lets jewellers create colours: copper-heavy alloys give rose gold, nickel or palladium give white gold. In the UK, 9 carat dominates because it is durable and affordable; 18 carat is the standard for higher-end pieces; 22 carat is favoured in South Asian jewellery for its rich colour and closeness to pure gold.</p>` },
+    { h2: 'How to read a UK hallmark', html: `  <p>A full UK hallmark has three compulsory parts: the <strong>sponsor's mark</strong> (who submitted the item), the <strong>fineness number</strong> in a shaped shield (750, 585, 375 and so on — this is the purity), and the <strong>assay office mark</strong> (London's leopard's head, Birmingham's anchor, Sheffield's rose, Edinburgh's castle). A date letter is optional. A piece with no fineness number has not been hallmarked and its purity is unverified. Each standard also has its own per-gram price — see the <a href="/24-carat-gold-price-per-gram-uk/">24 carat</a>, <a href="/18-carat-gold-price-per-gram-uk/">18 carat</a> and <a href="/9ct-gold-price-per-gram-uk/">9 carat</a> pages.</p>` },
+    { h2: 'How purity sets the price', html: `  <p>The per-gram price of any carat is the pure-gold spot price multiplied by that carat's fineness. At the same spot price, 9 carat gold is worth 37.5% of what 24 carat is worth per gram, and 18 carat is worth 75%. That is why weight alone tells you little: a heavy 9ct chain can be worth less than a light 18ct one. The <a href="/">live calculator</a> applies the fineness factor for you, and the <a href="/methodology/">methodology page</a> shows the formula.</p>` },
+  ],
+  faq: [
+    { q: 'What percentage of gold is in 9ct, 14ct, 18ct and 22ct?', a: '9 carat is 37.5% gold, 14 carat is 58.5%, 18 carat is 75% and 22 carat is 91.6%. The rest is alloy metals such as copper, silver, zinc, nickel or palladium.' },
+    { q: 'What does 375, 585, 750 or 916 mean on gold?', a: 'It is the fineness — the parts per 1,000 that are pure gold. 375 = 37.5% (9 carat), 585 = 58.5% (14 carat), 750 = 75% (18 carat), 916 = 91.6% (22 carat), 999 = 99.9% (24 carat).' },
+    { q: 'Is 9 carat gold real gold?', a: 'Yes. 9 carat gold is 37.5% pure gold and is legally hallmarked and sold as gold in the UK. It is the most common gold standard for British jewellery because it is hard-wearing and more affordable than higher carats.' },
+    { q: 'What is the difference between carat and karat?', a: 'Only the spelling — "carat" is the UK spelling, "karat" the US one. Both mean the same: parts of pure gold out of 24. (Diamond carat, a unit of weight, is a different measure entirely.)' },
+    { q: 'What carat is best for a wedding ring?', a: 'It is a trade-off between durability and gold content. 9 carat is the hardest-wearing and cheapest, 18 carat is a common compromise with a richer colour, and 22 or 24 carat is softest and marks most easily. Everyday wear usually points to 9ct or 18ct.' },
+    { q: 'How do I read a UK gold hallmark?', a: 'Look for three marks: the sponsor\'s mark (the maker or submitter), the fineness number in a shield (375, 585, 750, 916, 999 — the purity), and the assay office mark showing where it was tested (London, Birmingham, Sheffield or Edinburgh).' },
+    { q: 'Why is jewellery not made from pure 24 carat gold?', a: 'Pure gold is too soft — it bends, scratches and wears down quickly. Alloying it with other metals adds the hardness jewellery needs and also creates colours such as rose gold and white gold.' },
+  ],
+  relatedCarats: true,
+  related: [
+    ['/gold-melting-point/', 'Gold Melting Point', '1,064°C &amp; melting by carat'],
+    ['/gold-density/', 'Gold Density', '19.32 g/cm³ &amp; the fake-gold test'],
+    ['/methodology/', 'Methodology', 'How the price is calculated'],
+  ],
+};
+
 function relatedCaratLinks(excludeKey) {
   return CARAT_KEYS.filter(k => k !== excludeKey).map(k => {
     const c = CARATS[k];
@@ -520,6 +663,7 @@ ${siteBanner()}
   <h2 class="st">Other Purities &amp; Related Pages</h2>
   <div class="link-grid">
     ${relatedCaratLinks(key)}
+    <a class="link-card" href="/gold-purity-chart/"><div class="t">Gold Purity Chart</div><div class="sub">Carat, % and hallmark</div></a>
     <a class="link-card" href="/scrap-gold-price-per-gram-uk/"><div class="t">Scrap Gold</div><div class="sub">Selling &amp; dealer estimate</div></a>
     <a class="link-card" href="/gold-price-history-uk/"><div class="t">Price History</div><div class="sub">Chart &amp; trend</div></a>
     <a class="link-card" href="/gold-price-per-ounce-uk/"><div class="t">Per Troy Ounce</div><div class="sub">Bullion-unit pricing</div></a>
@@ -685,6 +829,8 @@ ${page.sellGuideHtml || ''}
   <h2 class="st">Other Pages</h2>
   <div class="link-grid">
     ${relatedCaratLinks('')}
+    <a class="link-card" href="/gold-density/"><div class="t">Gold Density</div><div class="sub">19.32 g/cm³ &amp; the fake-gold test</div></a>
+    <a class="link-card" href="/gold-melting-point/"><div class="t">Gold Melting Point</div><div class="sub">1,064°C &amp; melting by carat</div></a>
     <a class="link-card" href="/"><div class="t">Main Calculator</div><div class="sub">All purities in one tool</div></a>
     <a class="link-card" href="/gold-sovereign-price-uk/"><div class="t">Sovereign Coins</div><div class="sub">Sovereign, half-Sovereign, Britannia</div></a>
     <a class="link-card" href="/methodology/"><div class="t">Methodology</div><div class="sub">Data source &amp; formula</div></a>
@@ -808,6 +954,9 @@ ${siteBanner()}
     <a class="link-card" href="/"><div class="t">Main Calculator</div><div class="sub">All purities in one tool</div></a>
     ${relatedCaratLinks('')}
     <a class="link-card" href="/scrap-gold-price-per-gram-uk/"><div class="t">Scrap Gold</div><div class="sub">Selling &amp; dealer estimate</div></a>
+    <a class="link-card" href="/gold-purity-chart/"><div class="t">Gold Purity Chart</div><div class="sub">Carat, % and hallmark</div></a>
+    <a class="link-card" href="/gold-melting-point/"><div class="t">Gold Melting Point</div><div class="sub">1,064°C &amp; by carat</div></a>
+    <a class="link-card" href="/gold-density/"><div class="t">Gold Density</div><div class="sub">19.32 g/cm³ &amp; fake-gold test</div></a>
   </div>
 </div>
 </div>
@@ -1301,6 +1450,89 @@ ${eeatBlock()}
 `;
 }
 
+// Generic builder for the batch of pure-content informational guides (MELTING_POINT_PAGE,
+// GOLD_DENSITY_PAGE, PURITY_CHART_PAGE). Same @graph shape as buildHistoryPage minus the
+// chart: FAQPage + Organization, no Article. page.sections is an array of { h2, html };
+// page.related is an array of [href, title, sub]; page.relatedCarats prepends the carat grid.
+function buildInfoPage(page) {
+  const jsonLd = `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+${faqJsonLd(page.faq)}
+      ]
+    },
+    {
+      "@type": "Organization",
+      "name": "Gold Price Per Gram UK",
+      "legalName": "Gesmine-Invest Limited",
+      "identifier": { "@type": "PropertyValue", "propertyID": "UK Company Number", "value": "14120136" },
+      "address": { "@type": "PostalAddress", "streetAddress": "Hardy House, 269 Poynders Gardens", "addressLocality": "London", "postalCode": "SW4 8PQ", "addressCountry": "GB" }
+    }
+  ]
+}
+</script>`;
+
+  const relatedCards = [
+    page.relatedCarats ? relatedCaratLinks('') : '',
+    ...(page.related || []).map(([href, t, sub]) => `<a class="link-card" href="${href}"><div class="t">${t}</div><div class="sub">${sub}</div></a>`),
+    `<a class="link-card" href="/"><div class="t">Main Calculator</div><div class="sub">All carats in one tool</div></a>`,
+  ].filter(Boolean).join('\n    ');
+
+  return `<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+${headBoilerplate(page, null)}
+
+${jsonLd}
+${SHARED_STYLE}
+</head>
+<body>
+
+${siteBanner()}
+
+<header>
+  <div class="container">
+    <div class="badge">${page.badge || '📘 Reference guide'}</div>
+    <h1>${page.h1}</h1>
+    <p>${page.intro}</p>
+  </div>
+</header>
+
+<div class="container">
+<div class="content" style="padding-top:48px;">
+
+${page.sections.map(s => `  <h2 class="st">${s.h2}</h2>\n${s.html}`).join('\n\n')}
+
+  <h2 class="st">Other Purities &amp; Related Pages</h2>
+  <div class="link-grid">
+    ${relatedCards}
+  </div>
+
+  <h2 class="st">Frequently Asked Questions</h2>
+${faqHtml(page.faq)}
+</div>
+</div>
+
+${eeatBlock()}
+
+<footer>
+  <div class="container">
+    <div class="disc">Prices are an indicative live spot rate, not a dealer quote — always confirm with a dealer before selling. Data source: goldapi.io.</div>
+    <p><a href="/methodology/">Methodology</a> · Gold Price Per Gram UK</p>
+    <p style="font-size:.72rem;margin-top:8px;">Gold Price Per Gram calculators are part of Gesmine-Invest Limited, registered UK company number 14120136, registered office address at Hardy House, 269 Poynders Gardens, London, London, United Kingdom, SW4 8PQ.</p>
+  </div>
+</footer>
+
+<script>function toggleFaq(b){ b.classList.toggle('open'); b.nextElementSibling.classList.toggle('open'); }</script>
+</body>
+</html>
+`;
+}
+
 // --- Write files ---
 for (const key of CARAT_KEYS) {
   const page = CARATS[key];
@@ -1321,6 +1553,12 @@ console.log(`✓ ${METHODOLOGY_PAGE.slug}/index.html`);
 fs.mkdirSync(path.join(ROOT, HISTORY_PAGE.slug), { recursive: true });
 fs.writeFileSync(path.join(ROOT, HISTORY_PAGE.slug, 'index.html'), buildHistoryPage(HISTORY_PAGE));
 console.log(`✓ ${HISTORY_PAGE.slug}/index.html`);
+
+for (const infoPage of [MELTING_POINT_PAGE, GOLD_DENSITY_PAGE, PURITY_CHART_PAGE]) {
+  fs.mkdirSync(path.join(ROOT, infoPage.slug), { recursive: true });
+  fs.writeFileSync(path.join(ROOT, infoPage.slug, 'index.html'), buildInfoPage(infoPage));
+  console.log(`✓ ${infoPage.slug}/index.html`);
+}
 
 for (const unitPage of [OUNCE_PAGE, KG_PAGE]) {
   fs.mkdirSync(path.join(ROOT, unitPage.slug), { recursive: true });
