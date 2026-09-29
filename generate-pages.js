@@ -243,10 +243,10 @@ const SOVEREIGN_PAGE = {
 
 const HISTORY_PAGE = {
   slug: 'gold-price-history-uk',
-  title: 'Gold Price History UK — Live Chart & Data Per Gram (GBP)',
-  metaDesc: 'Gold price history UK per gram in GBP, charted from real live-tracked data — not a scraped estimate. See the trend, high/low and % change since tracking began.',
-  keywords: 'gold price history uk, gold price chart uk, gold price per gram history, gold price uk over time',
-  h1: 'Gold Price History UK',
+  title: 'Gold Price Today UK — Live £ per Gram & Ounce + History Chart',
+  metaDesc: "Today's gold price UK per gram and per ounce, GBP, updated 3× daily — plus the full historical chart, high/low and % change since tracking began.",
+  keywords: 'gold price today, gold price for today, gold price today uk, gold price history uk, gold price chart uk',
+  h1: 'Gold Price Today UK',
   faq: [
     { q: 'Where does this historical gold price data come from?', a: 'Every point on this chart is a real price this site fetched and published live, three times a day, since tracking began — not a scraped or reconstructed estimate. The archive grows automatically with each update, so the further back in time you look, the more of the chart is genuine recorded history.' },
     { q: 'Why does the chart only cover a few weeks/months so far?', a: 'The tracker is actively building its own historical archive in real time rather than backfilling with third-party data of unknown accuracy. Longer ranges (6 months, 1 year, 5 years) will appear automatically as the site continues running — check the "tracking since" date on this page.' },
@@ -1353,10 +1353,22 @@ fetch('/gold-data.json?t=' + Date.now(), {cache:'no-store'})
 }
 
 function buildHistoryPage(page) {
+  const GOLD = require('./gold-data.json');
+  const updatedStr = GOLD.lastUpdated
+    ? new Date(GOLD.lastUpdated).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) + ' GMT'
+    : 'pending first update';
+  const isoUpdated = GOLD.lastUpdated || new Date().toISOString();
+
   const jsonLd = `<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "WebPage",
+      "name": "${page.title}",
+      "url": "${SITE_URL}/${page.slug}/",
+      "dateModified": "${isoUpdated}"
+    },
     {
       "@type": "FAQPage",
       "mainEntity": [
@@ -1399,15 +1411,20 @@ ${siteBanner()}
 
 <header>
   <div class="container">
-    <div class="badge">📈 Real tracked data · updated 3×/day</div>
+    <div class="badge">📈 Live price · updated 3×/day · last: ${updatedStr}</div>
     <h1>${page.h1}</h1>
-    <p>The gold price per gram in the UK, charted from data this site has actually recorded live — no scraped or reconstructed history.</p>
+    <p>The gold price per gram UK today, GBP — plus the full historical chart, tracked and recorded live since ${stats ? stats.fromDate : 'launch'}.</p>
   </div>
 </header>
 
 <div class="container">
 <div class="tool-wrapper">
   <div class="chart-card">
+    <div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;text-align:center;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border);">
+      <div><div style="font-size:1.9rem;font-weight:800;color:var(--brand-dark);">£${GOLD.pricePerGram && GOLD.pricePerGram['24k'] != null ? GOLD.pricePerGram['24k'].toFixed(2) : '—'}</div><div style="font-size:.78rem;color:var(--muted);">per gram, 24 carat (999)</div></div>
+      <div><div style="font-size:1.9rem;font-weight:800;color:var(--brand-dark);">£${GOLD.spotPricePerOzGBP != null ? GOLD.spotPricePerOzGBP.toFixed(2) : '—'}</div><div style="font-size:.78rem;color:var(--muted);">per troy ounce</div></div>
+    </div>
+    <p style="font-size:.82rem;color:var(--muted);text-align:center;margin-bottom:14px;">Updated ${updatedStr}. Want a different purity (22k, 18k, 14k, 9ct)? Use the <a href="/">live calculator</a>.</p>
     <!-- START_HISTORY_CHART -->
 ${svg}
 <script>window.GOLD_HISTORY_STATS = ${JSON.stringify(stats)};</script>
@@ -1417,9 +1434,9 @@ ${svg}
 </div>
 
 <div class="content">
-  <h2 class="st">Gold Price Per Gram UK — Trend Summary</h2>
+  <h2 class="st">Gold Price History UK — Trend Summary</h2>
   <p>${statsSummary}</p>
-  <p>Want today's exact figure instead of the trend? Use the <a href="/">live calculator</a> for the current price by purity, or the <a href="/scrap-gold-price-per-gram-uk/">scrap gold page</a> if you're pricing jewellery to sell.</p>
+  <p>Want the price by purity instead of the trend? Use the <a href="/">live calculator</a> for the current price by carat, or the <a href="/scrap-gold-price-per-gram-uk/">scrap gold page</a> if you're pricing jewellery to sell.</p>
 
   <h2 class="st">Other Purities &amp; Related Pages</h2>
   <div class="link-grid">
